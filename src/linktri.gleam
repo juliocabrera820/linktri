@@ -1,5 +1,6 @@
 import gleam/list
 import gleam/option.{type Option, None, Some}
+import gleam/string
 import lustre
 import lustre/attribute
 import lustre/element.{type Element}
@@ -18,7 +19,15 @@ const flamingo = "#F4B9B9"
 
 const peach = "#F2C94C"
 
-const description = "Software Engineer </> Ruby & Elixir Enthusiast </> Metalhead </> Wannabe Pixel Artist"
+fn description() -> String {
+  string.join(
+    [
+      "Software Engineer", "Tech Enthusiast", "Metalhead",
+      "Wannabe Pixel Artist",
+    ],
+    with: " </> ",
+  )
+}
 
 const full_name = "Julio Cabrera"
 
@@ -77,26 +86,29 @@ fn update(model: #(Model, Nil), msg: Msg) -> #(Model, Nil) {
 
 // VIEW
 
-fn body_styles() -> List(#(String, String)) {
+fn root_styles() -> List(#(String, String)) {
   [
-    #("margin", "0"),
     #("padding", "0"),
+    #("margin", "0"),
     #("min-height", "100vh"),
     #("width", "100%"),
     #("background", background_gradient()),
+    #("background-attachment", "fixed"),
+    #("background-size", "cover"),
     #("color", rosewater),
     #("display", "flex"),
-    #("justify-content", "center"),
+    #("flex-direction", "column"),
     #("align-items", "center"),
     #("font-family", "'Inter', system-ui, -apple-system, sans-serif"),
     #("box-sizing", "border-box"),
-    #("min-width", "100vw"),
-    #("overflow", "hidden"),
-    #("position", "fixed"),
-    #("top", "0"),
+    #("-webkit-font-smoothing", "antialiased"),
+    #("position", "absolute"),
     #("left", "0"),
+    #("top", "0"),
     #("right", "0"),
     #("bottom", "0"),
+    #("overflow-y", "auto"),
+    #("-webkit-overflow-scrolling", "touch"),
   ]
 }
 
@@ -104,13 +116,14 @@ fn container_styles() -> List(#(String, String)) {
   [
     #("max-width", "680px"),
     #("width", "90%"),
-    #("min-height", "100vh"),
-    #("padding", "40px 20px"),
     #("display", "flex"),
     #("flex-direction", "column"),
     #("align-items", "center"),
     #("justify-content", "space-between"),
-    #("box-sizing", "border-box"),
+    #("padding", "40px 20px"),
+    #("height", "100%"),
+    #("margin", "0 auto"),
+    #("background", "transparent"),
   ]
 }
 
@@ -161,6 +174,8 @@ fn main_content_styles() -> List(#(String, String)) {
     #("align-items", "center"),
     #("gap", "16px"),
     #("width", "100%"),
+    #("flex", "1"),
+    #("margin-bottom", "40px"),
   ]
 }
 
@@ -203,6 +218,7 @@ fn footer_styles() -> List(#(String, String)) {
     #("font-size", "14px"),
     #("font-weight", "500"),
     #("width", "100%"),
+    #("background", "transparent"),
     #("margin-top", "auto"),
   ]
 }
@@ -218,7 +234,7 @@ fn view(model_tuple: #(Model, Nil)) -> Element(Msg) {
         attribute.style(avatar_styles()),
       ]),
       html.h1([attribute.style(name_styles())], [html.text(full_name)]),
-      html.p([attribute.style(bio_styles())], [html.text(description)]),
+      html.p([attribute.style(bio_styles())], [html.text(description())]),
     ])
 
   let link_elements =
@@ -244,7 +260,7 @@ fn view(model_tuple: #(Model, Nil)) -> Element(Msg) {
   let footer =
     html.footer([attribute.style(footer_styles())], [html.text(footer_content)])
 
-  html.div([attribute.style(body_styles())], [
+  html.div([attribute.style(root_styles())], [
     html.div([attribute.style(container_styles())], [
       profile,
       html.div([attribute.style(main_content_styles())], link_elements),
