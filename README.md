@@ -1,10 +1,21 @@
-# linktri
+# Linktri
 
-[![Package Version](https://img.shields.io/hexpm/v/linktri)](https://hex.pm/packages/linktri)
-[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/linktri/)
+Web app to display contact information
 
 ## Development
 
 ```sh
 gleam run -m lustre/dev start # Run the project 
+```
+
+## Production
+
+```sh
+gleam run -m lustre/dev build app --minify
+```
+
+## Test
+
+```sh
+gleam test
 ```

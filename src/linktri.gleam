@@ -1,3 +1,4 @@
+import gleam/int
 import gleam/list
 import gleam/option.{type Option, None, Some}
 import gleam/string
@@ -29,9 +30,22 @@ fn description() -> String {
   )
 }
 
+@external(javascript, "./date.mjs", "getCurrentYear")
+fn get_current_year() -> Int
+
 const full_name = "Julio Cabrera"
 
-const footer_content = "© 2024-2025 ~ Julio Cabrera (Jules)"
+fn start_year() -> String {
+  int.to_string(2024)
+}
+
+fn footer_content() -> String {
+  "© "
+  <> start_year()
+  <> "-"
+  <> int.to_string(get_current_year())
+  <> " ~ Julio Cabrera (Jules)"
+}
 
 // GRADIENTS
 fn background_gradient() -> String {
@@ -258,7 +272,9 @@ fn view(model_tuple: #(Model, Nil)) -> Element(Msg) {
     })
 
   let footer =
-    html.footer([attribute.style(footer_styles())], [html.text(footer_content)])
+    html.footer([attribute.style(footer_styles())], [
+      html.text(footer_content()),
+    ])
 
   html.div([attribute.style(root_styles())], [
     html.div([attribute.style(container_styles())], [
