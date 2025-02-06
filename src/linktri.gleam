@@ -42,7 +42,7 @@ fn start_year() -> String {
 fn footer_content() -> String {
   "© "
   <> start_year()
-  <> " - "
+  <> "-"
   <> int.to_string(get_current_year())
   <> " ~ Julio Cabrera (Jules)"
 }
