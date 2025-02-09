@@ -44,7 +44,9 @@ fn footer_content() -> String {
   <> start_year()
   <> "-"
   <> int.to_string(get_current_year())
-  <> " ~ Julio Cabrera (Jules)"
+  <> " ~ "
+  <> full_name
+  <> " (Jules)"
 }
 
 // GRADIENTS
@@ -75,11 +77,11 @@ pub type Model {
 
 fn init(_flags) -> #(Model, Nil) {
   let links = [
-    Link("GitHub", "https://github.com/juliocabrera820"),
-    Link("Twitter ~ X", "https://twitter.com/arielcabrera_11"),
+    Link("Portfolio", "https://juleskab.lat"),
     Link("LinkedIn", "https://www.linkedin.com/in/julio-cabrera-820"),
+    Link("X ~ Twitter", "https://twitter.com/arielcabrera_11"),
+    Link("GitHub", "https://github.com/juliocabrera820"),
     Link("Pinterest", "https://mx.pinterest.com/juliocabrera820"),
-    Link("Instagram", "https://www.instagram.com/juless_kab"),
   ]
   #(Model(links: links, hover_link: None), Nil)
 }
