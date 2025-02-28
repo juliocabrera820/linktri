@@ -245,7 +245,7 @@ fn view(model_tuple: #(Model, Nil)) -> Element(Msg) {
   let profile =
     html.div([attribute.style(profile_styles())], [
       html.img([
-        attribute.src("/priv/static/images/avatar.jpeg"),
+        attribute.src("/priv/static/images/avatar.webp"),
         attribute.alt(full_name),
         attribute.style(avatar_styles()),
       ]),
