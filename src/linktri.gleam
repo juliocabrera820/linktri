@@ -78,6 +78,7 @@ pub type Model {
 fn init(_flags) -> #(Model, Nil) {
   let links = [
     Link("Portfolio", "https://juleskab.lat"),
+    Link("Blog", "https://blog.juleskab.lat"),
     Link("LinkedIn", "https://www.linkedin.com/in/julio-cabrera-820"),
     Link("X ~ Twitter", "https://twitter.com/arielcabrera_11"),
     Link("GitHub", "https://github.com/juliocabrera820"),
