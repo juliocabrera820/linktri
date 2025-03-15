@@ -105,6 +105,30 @@ fn update(model: #(Model, Nil), msg: Msg) -> #(Model, Nil) {
 
 // VIEW
 
+fn font_face_styles() -> String {
+  "@font-face {
+    font-family: 'Press Start 2P';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/priv/static/fonts/PressStart2P.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/priv/static/fonts/JetBrainsMono.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('/priv/static/fonts/JetBrainsMono.woff2') format('woff2');
+  }"
+}
+
 fn root_styles() -> List(#(String, String)) {
   [
     #("padding", "0"),
@@ -249,6 +273,7 @@ fn footer_styles() -> List(#(String, String)) {
 
 fn view(model_tuple: #(Model, Nil)) -> Element(Msg) {
   let model = model_tuple.0
+  let font_styles = html.style([], font_face_styles())
 
   let profile =
     html.div([attribute.style(profile_styles())], [
@@ -287,6 +312,7 @@ fn view(model_tuple: #(Model, Nil)) -> Element(Msg) {
     ])
 
   html.div([attribute.style(root_styles())], [
+    font_styles,
     html.div([attribute.style(container_styles())], [
       profile,
       html.div([attribute.style(main_content_styles())], link_elements),
