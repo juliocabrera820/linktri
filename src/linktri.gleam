@@ -6,10 +6,7 @@ import lustre
 import lustre/attribute
 import lustre/element.{type Element}
 import lustre/element/html
-import styles.{
-  avatar_styles, bio_styles, container_styles, font_face_styles, footer_styles,
-  link_styles, main_content_styles, name_styles, profile_styles, root_styles,
-}
+import styles.{general_styles}
 
 fn description() -> String {
   string.join(
@@ -85,17 +82,18 @@ fn update(model: #(Model, Nil), msg: Msg) -> #(Model, Nil) {
 
 fn view(model_tuple: #(Model, Nil)) -> Element(Msg) {
   let model = model_tuple.0
-  let font_styles = html.style([], font_face_styles())
+
+  let font_styles = html.style([], general_styles())
 
   let profile =
-    html.div([attribute.style(profile_styles())], [
+    html.div([attribute.class("profile")], [
       html.img([
         attribute.src("/priv/static/images/avatar.webp"),
         attribute.alt(full_name),
-        attribute.style(avatar_styles()),
+        attribute.class("avatar"),
       ]),
-      html.h1([attribute.style(name_styles())], [html.text(full_name)]),
-      html.p([attribute.style(bio_styles())], [html.text(description())]),
+      html.h1([attribute.class("profile-name")], [html.text(full_name)]),
+      html.p([attribute.class("profile-bio")], [html.text(description())]),
     ])
 
   let link_elements =
@@ -105,12 +103,17 @@ fn view(model_tuple: #(Model, Nil)) -> Element(Msg) {
         _ -> False
       }
 
+      let link_class = case is_hover {
+        True -> "link link-hover"
+        False -> "link"
+      }
+
       html.a(
         [
           attribute.href(link.url),
           attribute.target("_blank"),
           attribute.rel("noopener noreferrer"),
-          attribute.style(link_styles(is_hover)),
+          attribute.class(link_class),
           attribute.on("mouseenter", fn(_) { Ok(MouseEnter(link.url)) }),
           attribute.on("mouseleave", fn(_) { Ok(MouseLeave) }),
         ],
@@ -119,15 +122,13 @@ fn view(model_tuple: #(Model, Nil)) -> Element(Msg) {
     })
 
   let footer =
-    html.footer([attribute.style(footer_styles())], [
-      html.text(footer_content()),
-    ])
+    html.footer([attribute.class("footer")], [html.text(footer_content())])
 
-  html.div([attribute.style(root_styles())], [
+  html.div([attribute.class("root")], [
     font_styles,
-    html.div([attribute.style(container_styles())], [
+    html.div([attribute.class("container")], [
       profile,
-      html.div([attribute.style(main_content_styles())], link_elements),
+      html.div([attribute.class("main-content")], link_elements),
       footer,
     ]),
   ])
