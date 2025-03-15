@@ -8,17 +8,19 @@ import lustre/element.{type Element}
 import lustre/element/html
 
 // COLORS
-const mocha = "#3B2A29"
+const pixel_dark = "#1a1b26"
 
-const chocolate = "#4E3B5D"
+const pixel_accent = "#7aa2f7"
 
-const lavender = "#6B4C7A"
+const pixel_text = "#c0caf5"
 
-const rosewater = "#F5E0DC"
+const pixel_muted = "#A5AECF"
 
-const flamingo = "#F4B9B9"
+const pixel_highlight = "#c8a8ff"
 
-const peach = "#F2C94C"
+const pixel_font = "'Press Start 2P', cursive"
+
+const body_font = "'JetBrains Mono', monospace"
 
 fn description() -> String {
   string.join(
@@ -52,11 +54,11 @@ fn footer_content() -> String {
 // GRADIENTS
 fn background_gradient() -> String {
   "linear-gradient(165deg, "
-  <> mocha
+  <> pixel_dark
   <> " 0%, "
-  <> chocolate
+  <> pixel_dark
   <> " 50%, "
-  <> lavender
+  <> pixel_accent
   <> " 100%)"
 }
 
@@ -103,6 +105,30 @@ fn update(model: #(Model, Nil), msg: Msg) -> #(Model, Nil) {
 
 // VIEW
 
+fn font_face_styles() -> String {
+  "@font-face {
+    font-family: 'Press Start 2P';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/priv/static/fonts/PressStart2P.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/priv/static/fonts/JetBrainsMono.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('/priv/static/fonts/JetBrainsMono.woff2') format('woff2');
+  }"
+}
+
 fn root_styles() -> List(#(String, String)) {
   [
     #("padding", "0"),
@@ -112,11 +138,11 @@ fn root_styles() -> List(#(String, String)) {
     #("background", background_gradient()),
     #("background-attachment", "fixed"),
     #("background-size", "cover"),
-    #("color", rosewater),
+    #("color", pixel_text),
     #("display", "flex"),
     #("flex-direction", "column"),
     #("align-items", "center"),
-    #("font-family", "'Inter', system-ui, -apple-system, sans-serif"),
+    #("font-family", body_font),
     #("box-sizing", "border-box"),
     #("-webkit-font-smoothing", "antialiased"),
     #("position", "absolute"),
@@ -149,7 +175,7 @@ fn profile_styles() -> List(#(String, String)) {
     #("display", "flex"),
     #("flex-direction", "column"),
     #("align-items", "center"),
-    #("margin-bottom", "32px"),
+    #("margin-bottom", "18px"),
     #("text-align", "center"),
   ]
 }
@@ -159,28 +185,32 @@ fn avatar_styles() -> List(#(String, String)) {
     #("width", "96px"),
     #("height", "96px"),
     #("border-radius", "50%"),
-    #("margin-bottom", "16px"),
-    #("border", "3px solid " <> flamingo),
+    #("margin-bottom", "28px"),
+    #("border", "3px solid " <> pixel_accent),
     #("object-fit", "cover"),
   ]
 }
 
 fn name_styles() -> List(#(String, String)) {
   [
-    #("font-size", "24px"),
-    #("font-weight", "700"),
+    #("font-size", "26px"),
+    #("font-weight", "600"),
     #("margin", "0 0 8px 0"),
-    #("color", rosewater),
+    #("color", pixel_text),
+    #("font-family", pixel_font),
+    #("letter-spacing", "1px"),
   ]
 }
 
 fn bio_styles() -> List(#(String, String)) {
   [
     #("font-size", "16px"),
-    #("margin", "0 0 24px 0"),
-    #("color", flamingo),
+    #("font-weight", "600"),
+    #("margin", "0 0 18px 0"),
+    #("color", pixel_muted),
     #("max-width", "460px"),
     #("line-height", "1.5"),
+    #("letter-spacing", "0.5px"),
   ]
 }
 
@@ -192,7 +222,7 @@ fn main_content_styles() -> List(#(String, String)) {
     #("gap", "16px"),
     #("width", "100%"),
     #("flex", "1"),
-    #("margin-bottom", "40px"),
+    #("margin-bottom", "18px"),
   ]
 }
 
@@ -201,26 +231,27 @@ fn link_styles(is_hover: Bool) -> List(#(String, String)) {
     #("display", "block"),
     #("width", "100%"),
     #("padding", "14px 0"),
-    #("background-color", lavender),
-    #("color", rosewater),
+    #("background-color", pixel_dark),
+    #("color", pixel_text),
     #("text-decoration", "none"),
     #("border-radius", "8px"),
-    #("font-size", "16px"),
+    #("font-size", "14px"),
     #("font-weight", "600"),
     #("text-align", "center"),
-    #("border", "2px solid " <> flamingo),
+    #("border", "2px solid " <> pixel_accent),
     #("transition", "all 0.3s ease"),
     #("box-shadow", "0 2px 4px rgba(0, 0, 0, 0.1)"),
     #("cursor", "pointer"),
+    #("font-family", pixel_font),
   ]
 
   case is_hover {
     True -> [
       #("transform", "translateY(-3px)"),
       #("box-shadow", "0 5px 15px rgba(0, 0, 0, 0.2)"),
-      #("border-color", peach),
-      #("background-color", chocolate),
-      #("color", rosewater),
+      #("border-color", pixel_highlight),
+      #("background-color", pixel_accent),
+      #("color", pixel_dark),
       ..base_styles
     ]
     False -> base_styles
@@ -231,7 +262,7 @@ fn footer_styles() -> List(#(String, String)) {
   [
     #("text-align", "center"),
     #("padding", "20px 0"),
-    #("color", flamingo),
+    #("color", pixel_muted),
     #("font-size", "14px"),
     #("font-weight", "500"),
     #("width", "100%"),
@@ -242,6 +273,7 @@ fn footer_styles() -> List(#(String, String)) {
 
 fn view(model_tuple: #(Model, Nil)) -> Element(Msg) {
   let model = model_tuple.0
+  let font_styles = html.style([], font_face_styles())
 
   let profile =
     html.div([attribute.style(profile_styles())], [
@@ -280,6 +312,7 @@ fn view(model_tuple: #(Model, Nil)) -> Element(Msg) {
     ])
 
   html.div([attribute.style(root_styles())], [
+    font_styles,
     html.div([attribute.style(container_styles())], [
       profile,
       html.div([attribute.style(main_content_styles())], link_elements),
