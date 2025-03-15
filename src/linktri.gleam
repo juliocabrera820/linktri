@@ -53,9 +53,11 @@ fn footer_content() -> String {
 
 // GRADIENTS
 fn background_gradient() -> String {
-  "linear-gradient(165deg, "
+  "linear-gradient(0deg, "
   <> pixel_dark
   <> " 0%, "
+  <> pixel_dark
+  <> " 25%, "
   <> pixel_dark
   <> " 50%, "
   <> pixel_accent
@@ -186,7 +188,7 @@ fn avatar_styles() -> List(#(String, String)) {
     #("height", "96px"),
     #("border-radius", "50%"),
     #("margin-bottom", "28px"),
-    #("border", "3px solid " <> pixel_accent),
+    #("border", "3px solid " <> pixel_text),
     #("object-fit", "cover"),
   ]
 }
@@ -204,7 +206,7 @@ fn name_styles() -> List(#(String, String)) {
 
 fn bio_styles() -> List(#(String, String)) {
   [
-    #("font-size", "16px"),
+    #("font-size", "17px"),
     #("font-weight", "600"),
     #("margin", "0 0 18px 0"),
     #("color", pixel_muted),
