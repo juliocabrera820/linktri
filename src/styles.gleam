@@ -16,13 +16,55 @@ const body_font = "'JetBrains Mono', monospace"
 
 // GRADIENTS
 fn background_gradient() -> String {
-  "linear-gradient(0deg, "
+  "linear-gradient(135deg, "
   <> pixel_dark
   <> " 0%, "
-  <> pixel_dark
+  <> "#2a2c3e"
   <> " 25%, "
   <> pixel_dark
   <> " 50%, "
+  <> "#2a2c3e"
+  <> " 75%, "
+  <> pixel_dark
+  <> " 100%)"
+}
+
+// ANIMATIONS
+pub fn wave_animation_keyframes() -> String {
+  "@keyframes waveAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  @keyframes bgWaveAnimation {
+    0% {
+      background-position: 0% 0%;
+    }
+    50% {
+      background-position: 100% 100%;
+    }
+    100% {
+      background-position: 0% 0%;
+    }
+  }"
+}
+
+pub fn link_wave_border() -> String {
+  "linear-gradient(90deg, "
+  <> pixel_accent
+  <> " 0%, "
+  <> pixel_highlight
+  <> " 25%, "
+  <> pixel_accent
+  <> " 50%, "
+  <> pixel_highlight
+  <> " 75%, "
   <> pixel_accent
   <> " 100%)"
 }
@@ -49,7 +91,8 @@ pub fn font_face_styles() -> String {
     font-weight: 600;
     font-display: swap;
     src: url('/priv/static/fonts/JetBrainsMono.woff2') format('woff2');
-  }"
+  }
+  " <> wave_animation_keyframes()
 }
 
 pub fn root_styles() -> List(#(String, String)) {
@@ -59,8 +102,9 @@ pub fn root_styles() -> List(#(String, String)) {
     #("min-height", "100vh"),
     #("width", "100%"),
     #("background", background_gradient()),
+    #("background-size", "300% 300%"),
     #("background-attachment", "fixed"),
-    #("background-size", "cover"),
+    #("animation", "bgWaveAnimation 12s ease infinite"),
     #("color", pixel_text),
     #("display", "flex"),
     #("flex-direction", "column"),
@@ -161,23 +205,38 @@ pub fn link_styles(is_hover: Bool) -> List(#(String, String)) {
     #("font-size", "14px"),
     #("font-weight", "600"),
     #("text-align", "center"),
-    #("border", "2px solid " <> pixel_accent),
     #("transition", "all 0.3s ease"),
     #("box-shadow", "0 2px 4px rgba(0, 0, 0, 0.1)"),
     #("cursor", "pointer"),
     #("font-family", pixel_font),
+    #("position", "relative"),
   ]
 
   case is_hover {
     True -> [
       #("transform", "translateY(-3px)"),
       #("box-shadow", "0 5px 15px rgba(0, 0, 0, 0.2)"),
-      #("border-color", pixel_highlight),
-      #("background-color", pixel_accent),
-      #("color", pixel_dark),
+      #("color", pixel_highlight),
+      #("border", "none"),
+      #("background-origin", "border-box"),
+      #("background-clip", "padding-box, border-box"),
+      #(
+        "background-image",
+        "linear-gradient("
+          <> pixel_dark
+          <> ", "
+          <> pixel_dark
+          <> "), "
+          <> link_wave_border(),
+      ),
+      #("background-size", "100% 100%, 200% 200%"),
+      #("border-radius", "12px"),
+      #("padding", "14px 0"),
+      #("animation", "waveAnimation 2s ease infinite"),
+      #("border", "4px solid transparent"),
       ..base_styles
     ]
-    False -> base_styles
+    False -> [#("border", "2px solid " <> pixel_accent), ..base_styles]
   }
 }
 
