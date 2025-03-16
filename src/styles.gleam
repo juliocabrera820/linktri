@@ -181,7 +181,12 @@ fn base_styles() -> String {
     height: 96px;
     border-radius: 50%;
     margin-bottom: 28px;
-    border: 3px solid " <> pixel_text <> ";
+    border: 3px solid transparent;
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    background-image: linear-gradient(#ffffff, #ffffff), " <> link_wave_border() <> ";
+    background-size: calc(100% - 6px) calc(100% - 6px), 200% 200%;
+    animation: waveAnimation 3s ease infinite;
     object-fit: cover;
   }
   
