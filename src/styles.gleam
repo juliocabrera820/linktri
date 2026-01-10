@@ -84,10 +84,14 @@ pub fn general_styles() -> String {
     padding: 0;
     width: 100%;
     height: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
     background-color: " <> cream_bg <> ";
     background-image: url(\"" <> vans_pattern_uri() <> "\");
     background-repeat: repeat;
     background-size: 380px 320px;
+    overflow-x: hidden;
   }
   
   @media (max-width: " <> breakpoint_mobile <> ") {
@@ -96,14 +100,11 @@ pub fn general_styles() -> String {
     }
   }
   
-  body {
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-  
   #app {
     width: 100%;
     min-height: 100vh;
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
   }
   
   " <> animation_keyframes() <> "
@@ -125,7 +126,8 @@ fn base_styles() -> String {
     padding: 0;
     margin: 0;
     min-height: 100vh;
-    height: 100vh;
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
     width: 100%;
     background-color: " <> cream_bg <> ";
     background-image: url(\"" <> vans_pattern_uri() <> "\");
@@ -138,12 +140,12 @@ fn base_styles() -> String {
     justify-content: center;
     font-family: " <> body_font <> ";
     -webkit-font-smoothing: antialiased;
-    overflow: hidden;
   }
   
   @media (max-width: " <> breakpoint_mobile <> ") {
     .root {
       background-image: none;
+      padding: 10px 0;
     }
   }
   
@@ -342,28 +344,28 @@ fn mobile_styles() -> String {
     "
     .container {
       width: 95%;
-      padding: 30px 12px 20px;
+      padding: 15px 12px 10px;
     }
     .avatar {
-      width: 100px;
-      height: 100px;
-      margin-bottom: 16px;
-      box-shadow: 4px 4px 0 " <> ink_black <> ";
+      width: 80px;
+      height: 80px;
+      margin-bottom: 8px;
+      box-shadow: 3px 3px 0 " <> ink_black <> ";
       border-width: 2px;
     }
     .profile {
-      margin-bottom: 24px;
+      margin-bottom: 12px;
     }
     .profile-name {
-      font-size: 20px;
+      font-size: 18px;
     }
     .profile-bio {
-      font-size: 11px;
+      font-size: 10px;
       max-width: 95%;
     }
     .link {
-      padding: 10px 14px;
-      gap: 10px;
+      padding: 8px 12px;
+      gap: 8px;
       border-width: 2px;
       box-shadow: 3px 3px 0 " <> ink_black <> ";
     }
@@ -372,19 +374,19 @@ fn mobile_styles() -> String {
       box-shadow: 2px 2px 0 " <> ink_black <> ";
     }
     .link-icon {
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
     }
     .link-text {
-      font-size: 14px;
+      font-size: 13px;
     }
     .main-content {
-      gap: 10px;
-      margin-bottom: 20px;
+      gap: 6px;
+      margin-bottom: 10px;
     }
     .footer {
-      padding: 14px 0;
-      font-size: 11px;
+      padding: 8px 0;
+      font-size: 10px;
     }
     ",
   )
@@ -395,39 +397,41 @@ fn small_mobile_styles() -> String {
     breakpoint_small_mobile,
     "
     .container {
-      padding: 25px 10px 18px;
+      padding: 10px 8px 8px;
     }
     .avatar {
-      width: 85px;
-      height: 85px;
-      box-shadow: 3px 3px 0 " <> ink_black <> ";
+      width: 70px;
+      height: 70px;
+      margin-bottom: 6px;
+      box-shadow: 2px 2px 0 " <> ink_black <> ";
     }
     .profile-name {
-      font-size: 18px;
+      font-size: 16px;
     }
     .profile-bio {
-      font-size: 10px;
+      font-size: 9px;
     }
     .profile {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
     .link {
-      padding: 8px 12px;
-      gap: 8px;
+      padding: 6px 10px;
+      gap: 6px;
     }
     .link-icon {
-      width: 22px;
-      height: 22px;
+      width: 18px;
+      height: 18px;
     }
     .link-text {
-      font-size: 13px;
+      font-size: 12px;
     }
     .main-content {
-      gap: 8px;
+      gap: 5px;
+      margin-bottom: 8px;
     }
     .footer {
-      padding: 12px 0;
-      font-size: 10px;
+      padding: 6px 0;
+      font-size: 9px;
     }
     ",
   )
