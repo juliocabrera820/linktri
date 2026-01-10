@@ -33,8 +33,7 @@ fn footer_content() -> String {
   <> "-"
   <> int.to_string(get_current_year())
   <> " ~ "
-  <> full_name
-  <> " (Jules)"
+  <> " Juleskab"
 }
 
 pub fn main() {
@@ -44,8 +43,16 @@ pub fn main() {
 
 // MODEL
 
+pub type LinkType {
+  GitHub
+  LinkedIn
+  Portfolio
+  Twitter
+  Blog
+}
+
 pub type Link {
-  Link(title: String, url: String)
+  Link(title: String, url: String, link_type: LinkType, display_name: String)
 }
 
 pub type Model {
@@ -54,12 +61,11 @@ pub type Model {
 
 fn init(_flags) -> #(Model, Nil) {
   let links = [
-    Link("Portfolio", "https://juleskab.lat"),
-    Link("Blog", "https://blog.juleskab.lat"),
-    Link("LinkedIn", "https://www.linkedin.com/in/julio-cabrera-820"),
-    Link("X ~ Twitter", "https://twitter.com/arielcabrera_11"),
-    Link("GitHub", "https://github.com/juliocabrera820"),
-    Link("Pinterest", "https://mx.pinterest.com/juliocabrera820"),
+    Link("GitHub", "https://github.com/juliocabrera820", GitHub, "juliocabrera820"),
+    Link("LinkedIn", "https://www.linkedin.com/in/julio-cabrera-820", LinkedIn, "julio cabrera"),
+    Link("Portfolio", "https://juleskab.lat", Portfolio, "Portfolio"),
+    Link("Blog", "https://blog.juleskab.lat", Blog, "Blog"),
+    Link("X", "https://twitter.com/arielcabrera_11", Twitter, "arielcabrera_11"),
   ]
   #(Model(links: links, hover_link: None), Nil)
 }
@@ -75,6 +81,18 @@ fn update(model: #(Model, Nil), msg: Msg) -> #(Model, Nil) {
   case msg {
     MouseEnter(url) -> #(Model(..model.0, hover_link: Some(url)), Nil)
     MouseLeave -> #(Model(..model.0, hover_link: None), Nil)
+  }
+}
+
+// ICONS - Using CSS classes with background images
+
+fn get_icon_class(link_type: LinkType) -> String {
+  case link_type {
+    GitHub -> "link-icon link-icon-github"
+    LinkedIn -> "link-icon link-icon-linkedin"
+    Portfolio -> "link-icon link-icon-portfolio"
+    Twitter -> "link-icon link-icon-twitter"
+    Blog -> "link-icon link-icon-blog"
   }
 }
 
@@ -117,7 +135,10 @@ fn view(model_tuple: #(Model, Nil)) -> Element(Msg) {
           attribute.on("mouseenter", fn(_) { Ok(MouseEnter(link.url)) }),
           attribute.on("mouseleave", fn(_) { Ok(MouseLeave) }),
         ],
-        [html.text(link.title)],
+        [
+          html.span([attribute.class(get_icon_class(link.link_type))], []),
+          html.span([attribute.class("link-text")], [html.text(link.display_name)]),
+        ],
       )
     })
 
@@ -128,7 +149,7 @@ fn view(model_tuple: #(Model, Nil)) -> Element(Msg) {
     font_styles,
     html.div([attribute.class("container")], [
       profile,
-      html.div([attribute.class("main-content")], link_elements),
+      html.main([attribute.class("main-content")], link_elements),
       footer,
     ]),
   ])
