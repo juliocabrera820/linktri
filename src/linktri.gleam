@@ -21,7 +21,22 @@ fn description() -> String {
 @external(javascript, "./date.mjs", "getCurrentYear")
 fn get_current_year() -> Int
 
+@external(javascript, "./routing.mjs", "getPath")
+fn get_path() -> String
+
 const full_name = "Julio Cabrera"
+
+pub type Route {
+  Home
+  NotFound
+}
+
+fn get_route() -> Route {
+  case get_path() {
+    "/" -> Home
+    _ -> NotFound
+  }
+}
 
 fn start_year() -> String {
   int.to_string(2024)
@@ -56,7 +71,7 @@ pub type Link {
 }
 
 pub type Model {
-  Model(links: List(Link), hover_link: Option(String))
+  Model(links: List(Link), hover_link: Option(String), route: Route)
 }
 
 fn init(_flags) -> #(Model, Nil) {
@@ -67,7 +82,7 @@ fn init(_flags) -> #(Model, Nil) {
     Link("Blog", "https://blog.juleskab.lat", Blog, "Blog"),
     Link("X", "https://twitter.com/arielcabrera_11", Twitter, "arielcabrera_11"),
   ]
-  #(Model(links: links, hover_link: None), Nil)
+  #(Model(links: links, hover_link: None, route: get_route()), Nil)
 }
 
 // UPDATE
@@ -75,12 +90,14 @@ fn init(_flags) -> #(Model, Nil) {
 pub type Msg {
   MouseEnter(String)
   MouseLeave
+  NavigateTo(Route)
 }
 
 fn update(model: #(Model, Nil), msg: Msg) -> #(Model, Nil) {
   case msg {
     MouseEnter(url) -> #(Model(..model.0, hover_link: Some(url)), Nil)
     MouseLeave -> #(Model(..model.0, hover_link: None), Nil)
+    NavigateTo(route) -> #(Model(..model.0, route: route), Nil)
   }
 }
 
@@ -103,54 +120,122 @@ fn view(model_tuple: #(Model, Nil)) -> Element(Msg) {
 
   let font_styles = html.style([], general_styles())
 
-  let profile =
-    html.div([attribute.class("profile")], [
-      html.img([
-        attribute.src("/priv/static/images/avatar.webp"),
-        attribute.alt(full_name),
-        attribute.class("avatar"),
-      ]),
-      html.h1([attribute.class("profile-name")], [html.text(full_name)]),
-      html.p([attribute.class("profile-bio")], [html.text(description())]),
-    ])
-
-  let link_elements =
-    list.map(model.links, fn(link: Link) -> Element(Msg) {
-      let is_hover = case model.hover_link {
-        Some(url) if url == link.url -> True
-        _ -> False
-      }
-
-      let link_class = case is_hover {
-        True -> "link link-hover"
-        False -> "link"
-      }
-
-      html.a(
-        [
-          attribute.href(link.url),
-          attribute.target("_blank"),
-          attribute.rel("noopener noreferrer"),
-          attribute.class(link_class),
-          attribute.on("mouseenter", fn(_) { Ok(MouseEnter(link.url)) }),
-          attribute.on("mouseleave", fn(_) { Ok(MouseLeave) }),
-        ],
-        [
-          html.span([attribute.class(get_icon_class(link.link_type))], []),
-          html.span([attribute.class("link-text")], [html.text(link.display_name)]),
-        ],
-      )
-    })
-
-  let footer =
-    html.footer([attribute.class("footer")], [html.text(footer_content())])
+  let content = case model.route {
+    Home -> view_home(model)
+    NotFound -> view_404()
+  }
 
   html.div([attribute.class("root")], [
     font_styles,
-    html.div([attribute.class("container")], [
-      profile,
-      html.main([attribute.class("main-content")], link_elements),
-      footer,
-    ]),
+    html.div([attribute.class("container")], [content]),
   ])
+}
+
+fn view_404() -> Element(Msg) {
+  html.div([attribute.class("error-page")], [
+    // Skateboard icon animation
+    html.div([attribute.class("error-skateboard")], [
+      html.span([attribute.class("skateboard-emoji")], [html.text("🛹")])
+    ]),
+    // Error code with glitch effect
+    html.h1([attribute.class("error-code")], [html.text("404")]),
+    // Main message
+    html.p([attribute.class("error-title")], [
+      html.text("You went off the wall!")
+    ]),
+    // Subtitle
+    html.p([attribute.class("error-subtitle")], [
+      html.text("Looks like this page bailed on you...")
+    ]),
+    // Fun skateboarding terms
+    html.div([attribute.class("error-tips")], [
+      html.p([attribute.class("error-tip")], [
+        html.text("Maybe try a different trick? 🤙")
+      ])
+    ]),
+    // Back button with style
+    html.a([attribute.href("/"), attribute.class("error-button")], [
+      html.span([attribute.class("error-button-icon")], [html.text("←")]),
+      html.span([attribute.class("error-button-text")], [html.text("Back to the ramp")])
+    ])
+  ])
+}
+
+fn view_home(model: Model) -> Element(Msg) {
+  // Profile card with avatar, name, bio and status
+  let profile_card =
+    html.div([attribute.class("profile-card")], [
+      html.div([attribute.class("profile")], [
+        // Avatar with decorative ring
+        html.div([attribute.class("avatar-wrapper")], [
+          html.div([attribute.class("avatar-ring")], []),
+          html.img([
+            attribute.src("/priv/static/images/avatar.webp"),
+            attribute.alt(full_name),
+            attribute.class("avatar"),
+          ]),
+        ]),
+        html.h1([attribute.class("profile-name")], [html.text(full_name)]),
+        html.p([attribute.class("profile-bio")], [html.text(description())]),
+        // Status badge
+        html.div([attribute.class("status-badge")], [
+          html.span([attribute.class("status-dot")], []),
+          html.span([], [html.text("Available for work")])
+        ])
+      ])
+    ])
+
+  // Section title for links
+  let section_title =
+    html.div([attribute.class("section-title")], [
+      html.span([attribute.class("section-title-line")], []),
+      html.span([attribute.class("section-title-text")], [html.text("Connect with me")]),
+      html.span([attribute.class("section-title-line")], [])
+    ])
+
+  let link_elements =
+    list.map(model.links, render_link(model.hover_link, _))
+
+  let footer = html.footer([attribute.class("footer")], [
+    html.div([attribute.class("footer-text")], [
+      html.text(footer_content()),
+      html.span([attribute.class("footer-heart")], [html.text(" ♥")])
+    ])
+  ])
+
+  html.div([], [
+    profile_card, 
+    section_title,
+    html.main([attribute.class("main-content")], link_elements), 
+    footer
+  ])
+}
+
+// --- RENDER HELPERS ---
+
+fn render_link(hover_link: Option(String), link: Link) -> Element(Msg) {
+  let is_hover = case hover_link {
+    Some(url) if url == link.url -> True
+    _ -> False
+  }
+
+  let link_class = case is_hover {
+    True -> "link link-hover"
+    False -> "link"
+  }
+
+  html.a(
+    [
+      attribute.href(link.url),
+      attribute.target("_blank"),
+      attribute.rel("noopener noreferrer"),
+      attribute.class(link_class),
+      attribute.on("mouseenter", fn(_) { Ok(MouseEnter(link.url)) }),
+      attribute.on("mouseleave", fn(_) { Ok(MouseLeave) }),
+    ],
+    [
+      html.span([attribute.class(get_icon_class(link.link_type))], []),
+      html.span([attribute.class("link-text")], [html.text(link.display_name)]),
+    ],
+  )
 }
