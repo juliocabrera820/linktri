@@ -84,10 +84,14 @@ pub fn general_styles() -> String {
     padding: 0;
     width: 100%;
     height: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
     background-color: " <> cream_bg <> ";
     background-image: url(\"" <> vans_pattern_uri() <> "\");
     background-repeat: repeat;
     background-size: 380px 320px;
+    overflow-x: hidden;
   }
   
   @media (max-width: " <> breakpoint_mobile <> ") {
@@ -96,14 +100,11 @@ pub fn general_styles() -> String {
     }
   }
   
-  body {
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-  
   #app {
     width: 100%;
     min-height: 100vh;
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
   }
   
   " <> animation_keyframes() <> "
@@ -125,7 +126,10 @@ fn base_styles() -> String {
     padding: 0;
     margin: 0;
     min-height: 100vh;
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
     height: 100vh;
+    height: 100dvh;
     width: 100%;
     background-color: " <> cream_bg <> ";
     background-image: url(\"" <> vans_pattern_uri() <> "\");
@@ -138,12 +142,16 @@ fn base_styles() -> String {
     justify-content: center;
     font-family: " <> body_font <> ";
     -webkit-font-smoothing: antialiased;
-    overflow: hidden;
   }
   
   @media (max-width: " <> breakpoint_mobile <> ") {
     .root {
       background-image: none;
+      padding: 10px 0;
+      height: auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+      min-height: -webkit-fill-available;
     }
   }
   
@@ -304,33 +312,42 @@ fn tablet_styles() -> String {
     "
     .container {
       width: 92%;
-      padding: 35px 15px 25px;
+      padding: 20px 15px 15px;
     }
     .avatar {
-      width: 120px;
-      height: 120px;
-      box-shadow: 5px 5px 0 " <> ink_black <> ";
+      width: 90px;
+      height: 90px;
+      margin-bottom: 10px;
+      box-shadow: 4px 4px 0 " <> ink_black <> ";
+    }
+    .profile {
+      margin-bottom: 14px;
     }
     .profile-name {
-      font-size: 24px;
+      font-size: 22px;
     }
     .profile-bio {
-      font-size: 12px;
+      font-size: 11px;
       max-width: 90%;
     }
     .link {
-      padding: 12px 16px;
-      gap: 12px;
+      padding: 10px 14px;
+      gap: 10px;
     }
     .link-icon {
-      width: 28px;
-      height: 28px;
+      width: 24px;
+      height: 24px;
     }
     .link-text {
-      font-size: 15px;
+      font-size: 14px;
     }
     .main-content {
-      gap: 12px;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .footer {
+      padding: 10px 0;
+      font-size: 12px;
     }
     ",
   )
@@ -342,28 +359,28 @@ fn mobile_styles() -> String {
     "
     .container {
       width: 95%;
-      padding: 30px 12px 20px;
+      padding: 15px 12px 10px;
     }
     .avatar {
-      width: 100px;
-      height: 100px;
-      margin-bottom: 16px;
-      box-shadow: 4px 4px 0 " <> ink_black <> ";
+      width: 80px;
+      height: 80px;
+      margin-bottom: 8px;
+      box-shadow: 3px 3px 0 " <> ink_black <> ";
       border-width: 2px;
     }
     .profile {
-      margin-bottom: 24px;
+      margin-bottom: 12px;
     }
     .profile-name {
-      font-size: 20px;
+      font-size: 18px;
     }
     .profile-bio {
-      font-size: 11px;
+      font-size: 10px;
       max-width: 95%;
     }
     .link {
-      padding: 10px 14px;
-      gap: 10px;
+      padding: 8px 12px;
+      gap: 8px;
       border-width: 2px;
       box-shadow: 3px 3px 0 " <> ink_black <> ";
     }
@@ -372,19 +389,19 @@ fn mobile_styles() -> String {
       box-shadow: 2px 2px 0 " <> ink_black <> ";
     }
     .link-icon {
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
     }
     .link-text {
-      font-size: 14px;
+      font-size: 13px;
     }
     .main-content {
-      gap: 10px;
-      margin-bottom: 20px;
+      gap: 6px;
+      margin-bottom: 10px;
     }
     .footer {
-      padding: 14px 0;
-      font-size: 11px;
+      padding: 8px 0;
+      font-size: 10px;
     }
     ",
   )
@@ -395,39 +412,41 @@ fn small_mobile_styles() -> String {
     breakpoint_small_mobile,
     "
     .container {
-      padding: 25px 10px 18px;
+      padding: 10px 8px 8px;
     }
     .avatar {
-      width: 85px;
-      height: 85px;
-      box-shadow: 3px 3px 0 " <> ink_black <> ";
+      width: 70px;
+      height: 70px;
+      margin-bottom: 6px;
+      box-shadow: 2px 2px 0 " <> ink_black <> ";
     }
     .profile-name {
-      font-size: 18px;
+      font-size: 16px;
     }
     .profile-bio {
-      font-size: 10px;
+      font-size: 9px;
     }
     .profile {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
     .link {
-      padding: 8px 12px;
-      gap: 8px;
+      padding: 6px 10px;
+      gap: 6px;
     }
     .link-icon {
-      width: 22px;
-      height: 22px;
+      width: 18px;
+      height: 18px;
     }
     .link-text {
-      font-size: 13px;
+      font-size: 12px;
     }
     .main-content {
-      gap: 8px;
+      gap: 5px;
+      margin-bottom: 8px;
     }
     .footer {
-      padding: 12px 0;
-      font-size: 10px;
+      padding: 6px 0;
+      font-size: 9px;
     }
     ",
   )
@@ -438,39 +457,48 @@ fn desktop_styles() -> String {
     breakpoint_desktop,
     "
     .container {
-      max-width: 500px;
-      padding: 50px 20px 35px;
+      max-width: 420px;
+      padding: 20px 20px 15px;
     }
     .avatar {
-      width: 160px;
-      height: 160px;
-      box-shadow: 1px 2px 0 " <> ink_black <> ";
+      width: 110px;
+      height: 110px;
+      margin-bottom: 10px;
+      box-shadow: 4px 4px 0 " <> ink_black <> ";
+    }
+    .profile {
+      margin-bottom: 16px;
     }
     .profile-name {
-      font-size: 32px;
+      font-size: 40px;
     }
     .profile-bio {
-      font-size: 14px;
-      max-width: 400px;
+      font-size: 16px;
+      max-width: 350px;
     }
     .link {
-      padding: 16px 20px;
-      gap: 16px;
-      box-shadow: 5px 5px 0 " <> ink_black <> ";
+      padding: 10px 14px;
+      gap: 12px;
+      box-shadow: 4px 4px 0 " <> ink_black <> ";
     }
     .link-hover {
-      transform: translate(3px, 3px);
+      transform: translate(2px, 2px);
       box-shadow: 2px 2px 0 " <> ink_black <> ";
     }
     .link-icon {
-      width: 36px;
-      height: 36px;
+      width: 26px;
+      height: 26px;
     }
     .link-text {
       font-size: 18px;
     }
     .main-content {
-      gap: 16px;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .footer {
+      padding: 10px 0;
+      font-size: 16px;
     }
     ",
   )
