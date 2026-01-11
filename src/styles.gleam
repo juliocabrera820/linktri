@@ -327,6 +327,11 @@ fn base_styles() -> String {
     animation: slideInUp 0.5s ease-out 0.2s backwards;
   }
   
+  .section-title-work {
+    margin-top: 6px;
+    animation-delay: 0.4s;
+  }
+  
   .section-title-line {
     flex: 1;
     height: 2px;
@@ -349,7 +354,7 @@ fn base_styles() -> String {
     align-items: stretch;
     gap: 8px;
     width: 100%;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
   }
   
   .link {
@@ -374,11 +379,9 @@ fn base_styles() -> String {
     box-shadow: 4px 4px 0 " <> ink_black <> ";
   }
   
-  .link:nth-child(1) { animation-delay: 0.3s; }
-  .link:nth-child(2) { animation-delay: 0.35s; }
-  .link:nth-child(3) { animation-delay: 0.4s; }
-  .link:nth-child(4) { animation-delay: 0.45s; }
-  .link:nth-child(5) { animation-delay: 0.5s; }
+  .link:nth-child(1) { animation-delay: 0.25s; }
+  .link:nth-child(2) { animation-delay: 0.3s; }
+  .link:nth-child(3) { animation-delay: 0.35s; }
   
   .link::after {
     content: '→';
@@ -671,6 +674,9 @@ fn tablet_styles() -> String {
       margin-bottom: 8px;
       gap: 8px;
     }
+    .section-title-work {
+      margin-top: 4px;
+    }
     .section-title-text {
       font-size: 8px;
       letter-spacing: 1px;
@@ -693,7 +699,7 @@ fn tablet_styles() -> String {
     }
     .main-content {
       gap: 7px;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
     .footer {
       padding: 8px 0 0 0;
@@ -789,6 +795,9 @@ fn mobile_styles() -> String {
       margin-bottom: 6px;
       gap: 6px;
     }
+    .section-title-work {
+      margin-top: 4px;
+    }
     .section-title-text {
       font-size: 7px;
       letter-spacing: 1px;
@@ -819,7 +828,7 @@ fn mobile_styles() -> String {
     }
     .main-content {
       gap: 6px;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
     .footer {
       padding: 8px 0 0 0;
@@ -926,6 +935,9 @@ fn small_mobile_styles() -> String {
       margin-bottom: 5px;
       gap: 5px;
     }
+    .section-title-work {
+      margin-top: 3px;
+    }
     .section-title-text {
       font-size: 6px;
     }
@@ -947,7 +959,7 @@ fn small_mobile_styles() -> String {
     }
     .main-content {
       gap: 5px;
-      margin-bottom: 8px;
+      margin-bottom: 5px;
     }
     .footer {
       padding: 6px 0 0 0;
@@ -1046,6 +1058,9 @@ fn desktop_styles() -> String {
       margin-bottom: 12px;
       gap: 12px;
     }
+    .section-title-work {
+      margin-top: 8px;
+    }
     .section-title-text {
       font-size: 10px;
       letter-spacing: 2px;
@@ -1075,7 +1090,7 @@ fn desktop_styles() -> String {
     }
     .main-content {
       gap: 10px;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
     .footer {
       padding: 12px 0 0 0;

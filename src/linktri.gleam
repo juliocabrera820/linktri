@@ -71,18 +71,25 @@ pub type Link {
 }
 
 pub type Model {
-  Model(links: List(Link), hover_link: Option(String), route: Route)
+  Model(
+    social_links: List(Link), 
+    work_links: List(Link),
+    hover_link: Option(String), 
+    route: Route
+  )
 }
 
 fn init(_flags) -> #(Model, Nil) {
-  let links = [
+  let social_links = [
     Link("GitHub", "https://github.com/juliocabrera820", GitHub, "juliocabrera820"),
     Link("LinkedIn", "https://www.linkedin.com/in/julio-cabrera-820", LinkedIn, "julio cabrera"),
-    Link("Portfolio", "https://juleskab.lat", Portfolio, "Portfolio"),
-    Link("Blog", "https://blog.juleskab.lat", Blog, "Blog"),
     Link("X", "https://twitter.com/arielcabrera_11", Twitter, "arielcabrera_11"),
   ]
-  #(Model(links: links, hover_link: None, route: get_route()), Nil)
+  let work_links = [
+    Link("Portfolio", "https://juleskab.lat", Portfolio, "Portfolio"),
+    Link("Blog", "https://blog.juleskab.lat", Blog, "Blog"),
+  ]
+  #(Model(social_links: social_links, work_links: work_links, hover_link: None, route: get_route()), Nil)
 }
 
 // UPDATE
@@ -185,16 +192,27 @@ fn view_home(model: Model) -> Element(Msg) {
       ])
     ])
 
-  // Section title for links
-  let section_title =
+  // Section title for social links
+  let social_section_title =
     html.div([attribute.class("section-title")], [
       html.span([attribute.class("section-title-line")], []),
       html.span([attribute.class("section-title-text")], [html.text("Connect with me")]),
       html.span([attribute.class("section-title-line")], [])
     ])
 
-  let link_elements =
-    list.map(model.links, render_link(model.hover_link, _))
+  let social_link_elements =
+    list.map(model.social_links, render_link(model.hover_link, _))
+
+  // Section title for work links
+  let work_section_title =
+    html.div([attribute.class("section-title section-title-work")], [
+      html.span([attribute.class("section-title-line")], []),
+      html.span([attribute.class("section-title-text")], [html.text("My work")]),
+      html.span([attribute.class("section-title-line")], [])
+    ])
+
+  let work_link_elements =
+    list.map(model.work_links, render_link(model.hover_link, _))
 
   let footer = html.footer([attribute.class("footer")], [
     html.div([attribute.class("footer-text")], [
@@ -205,8 +223,10 @@ fn view_home(model: Model) -> Element(Msg) {
 
   html.div([], [
     profile_card, 
-    section_title,
-    html.main([attribute.class("main-content")], link_elements), 
+    social_section_title,
+    html.div([attribute.class("main-content")], social_link_elements),
+    work_section_title,
+    html.div([attribute.class("main-content")], work_link_elements),
     footer
   ])
 }
