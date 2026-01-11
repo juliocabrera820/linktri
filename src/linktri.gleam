@@ -64,6 +64,7 @@ pub type LinkType {
   Portfolio
   Twitter
   Blog
+  Email
 }
 
 pub type Link {
@@ -81,11 +82,12 @@ pub type Model {
 
 fn init(_flags) -> #(Model, Nil) {
   let social_links = [
-    Link("GitHub", "https://github.com/juliocabrera820", GitHub, "juliocabrera820"),
+    Link("Email", "mailto:hello@juleskab.lat", Email, "hello@juleskab.lat"),
     Link("LinkedIn", "https://www.linkedin.com/in/julio-cabrera-820", LinkedIn, "julio cabrera"),
     Link("X", "https://twitter.com/arielcabrera_11", Twitter, "arielcabrera_11"),
   ]
   let work_links = [
+    Link("GitHub", "https://github.com/juliocabrera820", GitHub, "juliocabrera820"),
     Link("Portfolio", "https://juleskab.lat", Portfolio, "Portfolio"),
     Link("Blog", "https://blog.juleskab.lat", Blog, "Blog"),
   ]
@@ -117,6 +119,7 @@ fn get_icon_class(link_type: LinkType) -> String {
     Portfolio -> "link-icon link-icon-portfolio"
     Twitter -> "link-icon link-icon-twitter"
     Blog -> "link-icon link-icon-blog"
+    Email -> "link-icon link-icon-email"
   }
 }
 

@@ -86,6 +86,10 @@ fn blog_icon_uri() -> String {
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-2 -2 28 28'%3E%3Cpath d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 7h10v2H7V7zm0 4h10v2H7v-2zm0 4h7v2H7v-2z' fill='%23f5f0e6' stroke='%231a1a1a' stroke-width='1.2'/%3E%3C/svg%3E"
 }
 
+fn email_icon_uri() -> String {
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-2 -2 28 28'%3E%3Cpath d='M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z' fill='%23f5f0e6' stroke='%231a1a1a' stroke-width='1.2'/%3E%3C/svg%3E"
+}
+
 // Background pattern - Skateboard side view monogram
 fn vans_pattern_uri() -> String {
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='380' height='320' viewBox='0 0 380 320'%3E%3Cdefs%3E%3Cstyle%3E.deck%7Bfill:%23ebe6dc;stroke:%23ddd8ce;stroke-width:2;%7D.truck%7Bfill:%23ddd8ce;%7D.wheel%7Bfill:%23e8e3d9;stroke:%23ddd8ce;stroke-width:2;%7D.tx%7Bfont-family:Impact,Haettenschweiler,sans-serif;fill:%23ddd8ce;%7D.otw%7Bfill:none;stroke:%23ddd8ce;stroke-width:1.5;%7D%3C/style%3E%3C/defs%3E%3Cg transform='translate(20,40) rotate(-12)'%3E%3Cpath class='deck' d='M0,8 Q8,-2 20,2 L100,2 Q112,-2 120,8 L120,12 Q112,22 100,18 L20,18 Q8,22 0,12 Z'/%3E%3Crect class='truck' x='22' y='18' width='12' height='6' rx='1'/%3E%3Crect class='truck' x='86' y='18' width='12' height='6' rx='1'/%3E%3Ccircle class='wheel' cx='28' cy='32' r='8'/%3E%3Ccircle class='wheel' cx='92' cy='32' r='8'/%3E%3C/g%3E%3Cg transform='translate(220,20) rotate(5)'%3E%3Cellipse class='otw' cx='50' cy='18' rx='48' ry='16'/%3E%3Ctext class='tx' x='18' y='15' font-size='9'%3EVANS%3C/text%3E%3Ctext class='tx' x='8' y='26' font-size='7'%3E%22OFF THE WALL%22%3C/text%3E%3C/g%3E%3Cg transform='translate(200,100) rotate(-6)'%3E%3Cpath class='deck' d='M0,8 Q8,-2 20,2 L100,2 Q112,-2 120,8 L120,12 Q112,22 100,18 L20,18 Q8,22 0,12 Z'/%3E%3Crect class='truck' x='22' y='18' width='12' height='6' rx='1'/%3E%3Crect class='truck' x='86' y='18' width='12' height='6' rx='1'/%3E%3Ccircle class='wheel' cx='28' cy='32' r='8'/%3E%3Ccircle class='wheel' cx='92' cy='32' r='8'/%3E%3C/g%3E%3Cg transform='translate(20,150) rotate(6)'%3E%3Cellipse class='otw' cx='45' cy='15' rx='42' ry='13'/%3E%3Ctext class='tx' x='15' y='12' font-size='8'%3EVANS%3C/text%3E%3Ctext class='tx' x='8' y='22' font-size='6'%3E%22OFF THE WALL%22%3C/text%3E%3C/g%3E%3Cg transform='translate(50,210) rotate(-5)'%3E%3Cpath class='deck' d='M0,6 Q6,-2 16,2 L80,2 Q90,-2 96,6 L96,10 Q90,18 80,14 L16,14 Q6,18 0,10 Z'/%3E%3Crect class='truck' x='18' y='14' width='10' height='5' rx='1'/%3E%3Crect class='truck' x='68' y='14' width='10' height='5' rx='1'/%3E%3Ccircle class='wheel' cx='23' cy='26' r='7'/%3E%3Ccircle class='wheel' cx='73' cy='26' r='7'/%3E%3C/g%3E%3Cg transform='translate(220,200) rotate(8)'%3E%3Cpath class='deck' d='M0,8 Q8,-2 20,2 L100,2 Q112,-2 120,8 L120,12 Q112,22 100,18 L20,18 Q8,22 0,12 Z'/%3E%3Crect class='truck' x='22' y='18' width='12' height='6' rx='1'/%3E%3Crect class='truck' x='86' y='18' width='12' height='6' rx='1'/%3E%3Ccircle class='wheel' cx='28' cy='32' r='8'/%3E%3Ccircle class='wheel' cx='92' cy='32' r='8'/%3E%3C/g%3E%3Cg transform='translate(150,275) rotate(3)'%3E%3Cellipse class='otw' cx='50' cy='16' rx='48' ry='14'/%3E%3Ctext class='tx' x='18' y='13' font-size='8'%3EVANS%3C/text%3E%3Ctext class='tx' x='10' y='24' font-size='7'%3E%22OFF THE WALL%22%3C/text%3E%3C/g%3E%3C/svg%3E"
@@ -143,11 +147,13 @@ pub fn responsive_styles() -> String {
 fn base_styles() -> String {
   "
   .root {
-    padding: 20px 0;
+    padding: 12px 0;
     margin: 0;
     min-height: 100vh;
     min-height: 100dvh;
     min-height: -webkit-fill-available;
+    height: 100vh;
+    height: 100dvh;
     width: 100%;
     background-color: " <> cream_bg <> ";
     background-image: url(\"" <> vans_pattern_uri() <> "\");
@@ -161,18 +167,29 @@ fn base_styles() -> String {
     font-family: " <> body_font <> ";
     -webkit-font-smoothing: antialiased;
     box-sizing: border-box;
+    overflow: hidden;
   }
   
   @media (max-width: " <> breakpoint_mobile <> ") {
     .root {
       background-image: none;
-      padding: 16px 0;
-      justify-content: flex-start;
+      padding: 10px 0;
+      height: auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+      min-height: -webkit-fill-available;
+      overflow: visible;
+    }
+  }
+  
+  @supports (-webkit-touch-callout: none) {
+    .root {
+      min-height: -webkit-fill-available;
     }
   }
   
   .container {
-    max-width: 400px;
+    max-width: 380px;
     width: 90%;
     display: flex;
     flex-direction: column;
@@ -186,25 +203,12 @@ fn base_styles() -> String {
   .profile-card {
     background-color: " <> cream_bg <> ";
     border: 3px solid " <> ink_black <> ";
-    box-shadow: 5px 5px 0 " <> ink_black <> ";
-    padding: 20px 18px 16px;
+    box-shadow: 4px 4px 0 " <> ink_black <> ";
+    padding: 14px 14px 12px;
     width: 100%;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
     animation: slideInUp 0.5s ease-out;
     position: relative;
-    overflow: hidden;
-  }
-  
-  .profile-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, " <> ink_black <> " 0%, " <> ink_muted <> " 50%, " <> ink_black <> " 100%);
-    background-size: 200% 100%;
-    animation: shimmer 3s ease-in-out infinite;
   }
   
   .profile {
@@ -218,12 +222,12 @@ fn base_styles() -> String {
   /* Avatar with decorative border */
   .avatar-wrapper {
     position: relative;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
   }
   
   .avatar {
-    width: 90px;
-    height: 90px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
     border: 3px solid " <> ink_black <> ";
     background-color: " <> cream_light <> ";
@@ -242,22 +246,35 @@ fn base_styles() -> String {
     position: absolute;
     top: -6px;
     left: -6px;
-    width: 102px;
-    height: 102px;
-    border: 2px dashed " <> ink_muted <> ";
+    width: 84px;
+    height: 84px;
+    border-width: 2px;
+    border-style: dashed;
+    border-color: " <> ink_muted <> ";
     border-radius: 50%;
+    box-sizing: border-box;
+    -webkit-animation: spin 20s linear infinite;
     animation: spin 20s linear infinite;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  @-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
   }
   
   @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
   }
   
   .profile-name {
     font-size: 22px;
     font-weight: 900;
-    margin: 0 0 6px 0;
+    margin: 0 0 4px 0;
     color: " <> ink_black <> ";
     font-family: " <> main_font <> ";
     letter-spacing: 1.5px;
@@ -266,21 +283,10 @@ fn base_styles() -> String {
     display: inline-block;
   }
   
-  .profile-name::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 2px;
-    background-color: " <> ink_black <> ";
-  }
-  
   .profile-bio {
     font-size: 11px;
     font-weight: 600;
-    margin: 10px 0 0 0;
+    margin: 8px 0 0 0;
     color: " <> ink_muted <> ";
     max-width: 280px;
     line-height: 1.4;
@@ -298,7 +304,7 @@ fn base_styles() -> String {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    margin-top: 10px;
+    margin-top: 8px;
     padding: 4px 10px;
     background-color: " <> cream_light <> ";
     border: 2px solid " <> ink_black <> ";
@@ -310,8 +316,8 @@ fn base_styles() -> String {
   }
   
   .status-dot {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     background-color: #22c55e;
     border-radius: 50%;
     animation: pulse 2s ease-in-out infinite;
@@ -322,13 +328,13 @@ fn base_styles() -> String {
     width: 100%;
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 8px;
+    margin-bottom: 6px;
     animation: slideInUp 0.5s ease-out 0.2s backwards;
   }
   
   .section-title-work {
-    margin-top: 6px;
+    margin-top: 8px;
     animation-delay: 0.4s;
   }
   
@@ -347,26 +353,26 @@ fn base_styles() -> String {
     color: " <> ink_muted <> ";
     white-space: nowrap;
   }
-  
+
   .main-content {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 8px;
+    gap: 6px;
     width: 100%;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
   
   .link {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     width: 100%;
-    padding: 10px 12px;
+    padding: 8px 10px;
     background-color: " <> cream_bg <> ";
     color: " <> ink_black <> ";
     text-decoration: none;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 700;
     text-align: left;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -375,8 +381,8 @@ fn base_styles() -> String {
     position: relative;
     box-sizing: border-box;
     animation: slideInUp 0.5s ease-out backwards;
-    border: 3px solid " <> ink_black <> ";
-    box-shadow: 4px 4px 0 " <> ink_black <> ";
+    border: 2px solid " <> ink_black <> ";
+    box-shadow: 3px 3px 0 " <> ink_black <> ";
   }
   
   .link:nth-child(1) { animation-delay: 0.25s; }
@@ -386,8 +392,8 @@ fn base_styles() -> String {
   .link::after {
     content: '→';
     position: absolute;
-    right: 12px;
-    font-size: 14px;
+    right: 10px;
+    font-size: 12px;
     opacity: 0;
     transform: translateX(-10px);
     transition: all 0.2s ease;
@@ -395,7 +401,7 @@ fn base_styles() -> String {
   
   .link-hover {
     transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 " <> ink_black <> ";
+    box-shadow: 1px 1px 0 " <> ink_black <> ";
     background-color: " <> ink_black <> ";
     color: " <> cream_bg <> ";
   }
@@ -416,8 +422,8 @@ fn base_styles() -> String {
   }
   
   .link-icon {
-    width: 22px;
-    height: 22px;
+    width: 18px;
+    height: 18px;
     flex-shrink: 0;
     transition: all 0.2s ease;
     background-size: contain;
@@ -446,6 +452,10 @@ fn base_styles() -> String {
     background-image: url(\"" <> blog_icon_uri() <> "\");
   }
   
+  .link-icon-email {
+    background-image: url(\"" <> email_icon_uri() <> "\");
+  }
+  
   .link-text {
     flex: 1;
     font-family: " <> main_font <> ";
@@ -459,13 +469,12 @@ fn base_styles() -> String {
   /* Footer */
   .footer {
     text-align: center;
-    padding: 10px 0 0 0;
+    padding: 8px 0 0 0;
     color: " <> ink_muted <> ";
     font-size: 11px;
     font-weight: 600;
     width: 100%;
     background: transparent;
-    border-top: 2px solid " <> ink_black <> ";
     font-family: " <> body_font <> ";
     animation: slideInUp 0.5s ease-out 0.6s backwards;
   }
@@ -474,12 +483,11 @@ fn base_styles() -> String {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 4px;
   }
   
   .footer-heart {
     color: #7c3aed;
-    animation: pulse 1.5s ease-in-out infinite;
   }
   
   /* 404 Error Page Styles */
@@ -634,29 +642,32 @@ fn tablet_styles() -> String {
     breakpoint_tablet,
     "
     .root {
-      padding: 16px 0;
+      padding: 10px 0;
     }
     .container {
       width: 88%;
-      max-width: 380px;
+      max-width: 360px;
     }
     .profile-card {
-      padding: 18px 16px 14px;
-      box-shadow: 4px 4px 0 " <> ink_black <> ";
-      margin-bottom: 14px;
+      padding: 12px 12px 10px;
+      box-shadow: 3px 3px 0 " <> ink_black <> ";
+      margin-bottom: 8px;
     }
     .avatar-wrapper {
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
     .avatar {
-      width: 80px;
-      height: 80px;
+      width: 64px;
+      height: 64px;
     }
     .avatar-ring {
-      width: 94px;
-      height: 94px;
-      top: -7px;
-      left: -7px;
+      width: 76px;
+      height: 76px;
+      top: -6px;
+      left: -6px;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      -webkit-transform: translateZ(0);
     }
     .profile-name {
       font-size: 20px;
@@ -666,43 +677,47 @@ fn tablet_styles() -> String {
       max-width: 90%;
     }
     .status-badge {
-      margin-top: 8px;
-      padding: 4px 10px;
+      margin-top: 6px;
+      padding: 3px 8px;
       font-size: 8px;
     }
+    .status-dot {
+      width: 5px;
+      height: 5px;
+    }
     .section-title {
-      margin-bottom: 8px;
-      gap: 8px;
+      margin-bottom: 5px;
+      gap: 6px;
     }
     .section-title-work {
-      margin-top: 4px;
+      margin-top: 6px;
     }
     .section-title-text {
       font-size: 8px;
       letter-spacing: 1px;
     }
     .link {
-      padding: 9px 11px;
-      gap: 9px;
-      box-shadow: 3px 3px 0 " <> ink_black <> ";
+      padding: 7px 9px;
+      gap: 7px;
+      box-shadow: 2px 2px 0 " <> ink_black <> ";
     }
     .link::after {
-      right: 11px;
-      font-size: 13px;
+      right: 9px;
+      font-size: 11px;
     }
     .link-icon {
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
     }
     .link-text {
       font-size: 11px;
     }
     .main-content {
-      gap: 7px;
-      margin-bottom: 6px;
+      gap: 5px;
+      margin-bottom: 3px;
     }
     .footer {
-      padding: 8px 0 0 0;
+      padding: 6px 0 0 0;
       font-size: 10px;
     }
     /* 404 tablet styles */
@@ -737,66 +752,65 @@ fn mobile_styles() -> String {
     breakpoint_mobile,
     "
     .root {
-      padding: 12px 0;
+      padding: 10px 0;
       justify-content: flex-start;
+      height: auto;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
     }
     .container {
       width: 92%;
-      max-width: 360px;
+      max-width: 340px;
     }
     .profile-card {
-      padding: 16px 14px 12px;
+      padding: 12px 12px 10px;
       border-width: 2px;
       box-shadow: 3px 3px 0 " <> ink_black <> ";
-      margin-bottom: 12px;
-    }
-    .profile-card::before {
-      height: 2px;
+      margin-bottom: 8px;
     }
     .avatar-wrapper {
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
     .avatar {
-      width: 70px;
-      height: 70px;
+      width: 60px;
+      height: 60px;
       border-width: 2px;
     }
     .avatar-ring {
-      width: 84px;
-      height: 84px;
-      top: -7px;
-      left: -7px;
+      width: 72px;
+      height: 72px;
+      top: -6px;
+      left: -6px;
       border-width: 2px;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      -webkit-transform: translateZ(0);
     }
     .profile-name {
       font-size: 18px;
       letter-spacing: 1px;
     }
-    .profile-name::after {
-      width: 35px;
-      height: 2px;
-    }
     .profile-bio {
       font-size: 9px;
       max-width: 95%;
-      margin-top: 8px;
+      margin-top: 6px;
     }
     .status-badge {
-      margin-top: 8px;
-      padding: 3px 8px;
+      margin-top: 6px;
+      padding: 3px 7px;
       font-size: 7px;
       border-width: 1px;
     }
     .status-dot {
-      width: 5px;
-      height: 5px;
+      width: 4px;
+      height: 4px;
     }
     .section-title {
-      margin-bottom: 6px;
-      gap: 6px;
+      margin-bottom: 5px;
+      gap: 5px;
     }
     .section-title-work {
-      margin-top: 4px;
+      margin-top: 6px;
     }
     .section-title-text {
       font-size: 7px;
@@ -806,32 +820,32 @@ fn mobile_styles() -> String {
       height: 1px;
     }
     .link {
-      padding: 8px 10px;
-      gap: 8px;
+      padding: 7px 9px;
+      gap: 7px;
       border-width: 2px;
       box-shadow: 2px 2px 0 " <> ink_black <> ";
     }
     .link::after {
-      right: 10px;
-      font-size: 12px;
+      right: 9px;
+      font-size: 10px;
     }
     .link-hover {
       transform: translate(1px, 1px);
       box-shadow: 1px 1px 0 " <> ink_black <> ";
     }
     .link-icon {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
     }
     .link-text {
       font-size: 10px;
     }
     .main-content {
-      gap: 6px;
-      margin-bottom: 6px;
+      gap: 5px;
+      margin-bottom: 3px;
     }
     .footer {
-      padding: 8px 0 0 0;
+      padding: 6px 0 0 0;
       font-size: 9px;
     }
     /* 404 mobile styles */
@@ -887,42 +901,42 @@ fn small_mobile_styles() -> String {
     breakpoint_small_mobile,
     "
     .root {
-      padding: 10px 0;
+      padding: 8px 0;
     }
     .container {
       width: 94%;
-      max-width: 340px;
+      max-width: 320px;
     }
     .profile-card {
-      padding: 14px 12px 10px;
+      padding: 10px 10px 8px;
       box-shadow: 2px 2px 0 " <> ink_black <> ";
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
     .avatar-wrapper {
-      margin-bottom: 8px;
+      margin-bottom: 5px;
     }
     .avatar {
-      width: 60px;
-      height: 60px;
+      width: 52px;
+      height: 52px;
     }
     .avatar-ring {
-      width: 74px;
-      height: 74px;
-      top: -7px;
-      left: -7px;
+      width: 64px;
+      height: 64px;
+      top: -6px;
+      left: -6px;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      -webkit-transform: translateZ(0);
     }
     .profile-name {
       font-size: 16px;
     }
-    .profile-name::after {
-      width: 28px;
-    }
     .profile-bio {
       font-size: 8px;
-      margin-top: 6px;
+      margin-top: 5px;
     }
     .status-badge {
-      margin-top: 6px;
+      margin-top: 5px;
       padding: 2px 6px;
       font-size: 6px;
       gap: 3px;
@@ -932,37 +946,37 @@ fn small_mobile_styles() -> String {
       height: 4px;
     }
     .section-title {
-      margin-bottom: 5px;
-      gap: 5px;
+      margin-bottom: 4px;
+      gap: 4px;
     }
     .section-title-work {
-      margin-top: 3px;
+      margin-top: 5px;
     }
     .section-title-text {
       font-size: 6px;
     }
     .link {
-      padding: 7px 9px;
-      gap: 7px;
+      padding: 6px 8px;
+      gap: 6px;
       box-shadow: 2px 2px 0 " <> ink_black <> ";
     }
     .link::after {
-      right: 9px;
-      font-size: 10px;
+      right: 8px;
+      font-size: 9px;
     }
     .link-icon {
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
     }
     .link-text {
       font-size: 9px;
     }
     .main-content {
-      gap: 5px;
-      margin-bottom: 5px;
+      gap: 4px;
+      margin-bottom: 2px;
     }
     .footer {
-      padding: 6px 0 0 0;
+      padding: 5px 0 0 0;
       font-size: 8px;
     }
     /* 404 small mobile styles */
@@ -1011,55 +1025,58 @@ fn desktop_styles() -> String {
     breakpoint_desktop,
     "
     .root {
-      padding: 24px 0;
+      padding: 16px 0;
     }
     .container {
-      max-width: 420px;
+      max-width: 400px;
     }
     .profile-card {
-      padding: 24px 22px 18px;
-      box-shadow: 6px 6px 0 " <> ink_black <> ";
-      margin-bottom: 18px;
+      padding: 18px 18px 14px;
+      box-shadow: 5px 5px 0 " <> ink_black <> ";
+      margin-bottom: 12px;
     }
     .avatar-wrapper {
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
     .avatar {
-      width: 100px;
-      height: 100px;
-      border-width: 4px;
+      width: 80px;
+      height: 80px;
+      border-width: 3px;
     }
     .avatar-ring {
-      width: 116px;
-      height: 116px;
-      top: -8px;
-      left: -8px;
+      width: 94px;
+      height: 94px;
+      top: -7px;
+      left: -7px;
+      border-width: 2px;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      -webkit-transform: translateZ(0);
     }
     .profile-name {
       font-size: 26px;
       letter-spacing: 2px;
     }
-    .profile-name::after {
-      width: 60px;
-      height: 3px;
-      bottom: -3px;
-    }
     .profile-bio {
       font-size: 12px;
       max-width: 320px;
-      margin-top: 12px;
+      margin-top: 10px;
     }
     .status-badge {
-      margin-top: 12px;
+      margin-top: 10px;
       padding: 5px 12px;
       font-size: 10px;
     }
+    .status-dot {
+      width: 6px;
+      height: 6px;
+    }
     .section-title {
-      margin-bottom: 12px;
-      gap: 12px;
+      margin-bottom: 8px;
+      gap: 10px;
     }
     .section-title-work {
-      margin-top: 8px;
+      margin-top: 10px;
     }
     .section-title-text {
       font-size: 10px;
@@ -1069,31 +1086,32 @@ fn desktop_styles() -> String {
       height: 2px;
     }
     .link {
-      padding: 12px 14px;
-      gap: 12px;
-      box-shadow: 5px 5px 0 " <> ink_black <> ";
+      padding: 10px 12px;
+      gap: 10px;
+      box-shadow: 4px 4px 0 " <> ink_black <> ";
+      border-width: 3px;
     }
     .link::after {
-      right: 14px;
-      font-size: 16px;
+      right: 12px;
+      font-size: 14px;
     }
     .link-hover {
-      transform: translate(3px, 3px);
+      transform: translate(2px, 2px);
       box-shadow: 2px 2px 0 " <> ink_black <> ";
     }
     .link-icon {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
     }
     .link-text {
       font-size: 14px;
     }
     .main-content {
-      gap: 10px;
-      margin-bottom: 10px;
+      gap: 8px;
+      margin-bottom: 5px;
     }
     .footer {
-      padding: 12px 0 0 0;
+      padding: 10px 0 0 0;
       font-size: 12px;
     }
     ",
