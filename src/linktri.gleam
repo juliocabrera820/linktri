@@ -89,7 +89,7 @@ fn init(_flags) -> #(Model, Nil) {
   let work_links = [
     Link("GitHub", "https://github.com/juliocabrera820", GitHub, "juliocabrera820"),
     Link("Portfolio", "https://juleskab.lat", Portfolio, "Portfolio"),
-    Link("Blog", "https://blog.juleskab.lat", Blog, "Blog"),
+    Link("Blog", "https://juleskab.lat/blog", Blog, "Blog"),
   ]
   #(Model(social_links: social_links, work_links: work_links, hover_link: None, route: get_route()), Nil)
 }
