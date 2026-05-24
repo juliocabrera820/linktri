@@ -6,7 +6,7 @@ pub fn vans_styles() -> String {
   :root {
     --bg:        #EDE8DF;
     --bg2:       #E4DDD3;
-    --red:       #E31837;
+    --blue:       #3d70b3;
     --black:     #111111;
     --white:     #FAFAF7;
     --muted:     #7A7066;
@@ -30,7 +30,7 @@ pub fn vans_styles() -> String {
     position: fixed;
     width: 10px;
     height: 10px;
-    background: var(--red);
+    background: var(--blue);
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
@@ -59,7 +59,7 @@ pub fn vans_styles() -> String {
     position: fixed;
     bottom: 0; left: 0; right: 0;
     height: 36px;
-    background: var(--red);
+    background: var(--blue);
     overflow: hidden;
     z-index: 100;
     display: flex;
@@ -177,7 +177,7 @@ pub fn vans_styles() -> String {
   .avatar-ring {
     width: 96px; height: 96px;
     border-radius: 50%;
-    border: 3px solid var(--red);
+    border: 3px solid var(--blue);
     display: flex; align-items: center; justify-content: center;
     background: var(--bg2);
     position: relative;
@@ -200,7 +200,7 @@ pub fn vans_styles() -> String {
     position: absolute;
     bottom: -4px; right: -4px;
     width: 28px; height: 28px;
-    background: var(--red);
+    background: var(--blue);
     border-radius: 50%;
     border: 2px solid var(--bg);
     display: flex; align-items: center; justify-content: center;
@@ -222,7 +222,7 @@ pub fn vans_styles() -> String {
     letter-spacing: 0.02em;
     color: var(--black);
   }
-  .name-accent { color: var(--red); }
+  .name-accent { color: var(--blue); }
 
   .otw-tag {
     display: inline-block;
@@ -231,7 +231,7 @@ pub fn vans_styles() -> String {
     font-size: 11px;
     letter-spacing: 0.22em;
     color: var(--white);
-    background: var(--red);
+    background: var(--blue);
     padding: 3px 10px;
     text-transform: uppercase;
   }
@@ -247,7 +247,7 @@ pub fn vans_styles() -> String {
   }
   .tagline code {
     font-family: 'Space Grotesk', monospace;
-    color: var(--red);
+    color: var(--blue);
     font-size: 11px;
   }
 
@@ -317,7 +317,7 @@ pub fn vans_styles() -> String {
     position: absolute;
     left: 0; top: 10px; bottom: 10px;
     width: 3px;
-    background: var(--red);
+    background: var(--blue);
     border-radius: 0 2px 2px 0;
     transform: scaleY(0);
     transform-origin: center;
@@ -326,11 +326,11 @@ pub fn vans_styles() -> String {
   }
   .link-item:hover::before { opacity: 1; }
   .link-item:hover::after  { transform: scaleY(1); }
-  .link-item:hover .link-label { color: var(--red); }
+  .link-item:hover .link-label { color: var(--blue); }
   .link-item:hover .link-arrow { opacity: 1; transform: translateX(0); }
   .link-item:hover .link-icon {
-    background: var(--red);
-    border-color: var(--red);
+    background: var(--blue);
+    border-color: var(--blue);
     transform: scale(1.1);
   }
   .link-item:hover .link-info { transform: translateX(5px); }
@@ -384,7 +384,7 @@ pub fn vans_styles() -> String {
     opacity: 0;
     transform: translateX(-6px);
     transition: opacity 0.25s ease, transform 0.35s var(--spring);
-    color: var(--red);
+    color: var(--blue);
   }
   .link-arrow svg { width: 14px; height: 14px; }
 
@@ -451,6 +451,6 @@ pub fn vans_styles() -> String {
     letter-spacing: 0.12em;
     transition: background 0.2s ease;
   }
-  .error-button:hover { background: var(--red); }
+  .error-button:hover { background: var(--blue); }
   "
 }

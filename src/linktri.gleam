@@ -44,7 +44,6 @@ pub type LinkType {
   Email
   LinkedIn
   Twitter
-  GitHub
   Portfolio
   Blog
 }
@@ -99,14 +98,8 @@ fn init(_flags) -> #(Model, Effect(Msg)) {
       ),
     ]),
     LinkGroup("Projects", [
-      Link(
-        "GitHub",
-        "github.com/juliocabrera820",
-        "https://github.com/juliocabrera820",
-        GitHub,
-      ),
       Link("Portfolio", "juleskab.lat", "https://juleskab.lat", Portfolio),
-      Link("Blog", "juleskab.lat/blog", "https://blog.juleskab.lat", Blog),
+      Link("Blog", "blog.juleskab.lat", "https://blog.juleskab.lat", Blog),
     ]),
   ]
   #(
@@ -148,7 +141,6 @@ fn get_icon(link_type: LinkType) -> Element(Msg) {
     Email -> ui.icon_mail()
     LinkedIn -> ui.icon_linkedin()
     Twitter -> ui.icon_twitter()
-    GitHub -> ui.icon_github()
     Portfolio -> ui.icon_portfolio()
     Blog -> ui.icon_blog()
   }
@@ -247,7 +239,7 @@ fn view_avatar(loaded: Bool) -> Element(Msg) {
   }
   html.div([attribute.class(wrap_class)], [
     html.div([attribute.class("avatar-ring")], [
-      html.img([attribute.src("/priv/static/images/avatar.webp"), attribute.alt("Jules Kab"), attribute.class("avatar-placeholder")])
+      html.img([attribute.src("/priv/static/images/avatar.png"), attribute.alt("Jules Kab"), attribute.class("avatar-placeholder")])
     ]),
     html.div([attribute.class("avatar-badge")], [
       svg.svg(
