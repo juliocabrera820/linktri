@@ -1,3 +1,5 @@
+import gleam/list
+import gleam/option.{type Option, None, Some}
 import lustre/attribute
 import lustre/element.{type Element}
 import lustre/element/html
@@ -84,25 +86,6 @@ pub fn icon_twitter() -> Element(msg) {
         attribute.attribute("stroke", "#111"),
         attribute.attribute("stroke-width", "2"),
         attribute.attribute("stroke-linecap", "round"),
-      ]),
-    ],
-  )
-}
-
-pub fn icon_github() -> Element(msg) {
-  svg.svg(
-    [
-      attribute.attribute("viewBox", "0 0 24 24"),
-      attribute.attribute("fill", "none"),
-      attribute.attribute("xmlns", "http://www.w3.org/2000/svg"),
-    ],
-    [
-      svg.path([
-        attribute.attribute(
-          "d",
-          "M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2z",
-        ),
-        attribute.attribute("fill", "#111"),
       ]),
     ],
   )
@@ -201,6 +184,49 @@ pub fn icon_blog() -> Element(msg) {
   )
 }
 
+pub fn icon_3d_printing() -> Element(msg) {
+  svg.svg(
+    [
+      attribute.attribute("viewBox", "0 0 24 24"),
+      attribute.attribute("fill", "none"),
+      attribute.attribute("xmlns", "http://www.w3.org/2000/svg"),
+    ],
+    [
+      svg.path([
+        attribute.attribute("d", "M12 2L2 7v10l10 5 10-5V7L12 2z"),
+        attribute.attribute("stroke", "#111"),
+        attribute.attribute("stroke-width", "1.8"),
+        attribute.attribute("stroke-linejoin", "round"),
+      ]),
+      svg.path([
+        attribute.attribute("d", "M12 12V22"),
+        attribute.attribute("stroke", "#111"),
+        attribute.attribute("stroke-width", "1.8"),
+        attribute.attribute("stroke-linecap", "round"),
+      ]),
+      svg.path([
+        attribute.attribute("d", "M2 7l10 5 10-5"),
+        attribute.attribute("stroke", "#111"),
+        attribute.attribute("stroke-width", "1.8"),
+        attribute.attribute("stroke-linecap", "round"),
+        attribute.attribute("stroke-linejoin", "round"),
+      ]),
+      svg.path([
+        attribute.attribute("d", "M12 7l10-5"),
+        attribute.attribute("stroke", "#111"),
+        attribute.attribute("stroke-width", "1.8"),
+        attribute.attribute("stroke-linecap", "round"),
+      ]),
+      svg.circle([
+        attribute.attribute("cx", "12"),
+        attribute.attribute("cy", "12"),
+        attribute.attribute("r", "2"),
+        attribute.attribute("fill", "#111"),
+      ]),
+    ],
+  )
+}
+
 pub fn icon_arrow() -> Element(msg) {
   svg.svg(
     [
@@ -232,28 +258,75 @@ pub fn link_item(
   loaded: Bool,
   delay: String,
 ) -> Element(msg) {
-  let item_class = case loaded {
+  link_item_with_click(label, sub, href, icon, loaded, delay, None)
+}
+
+pub fn link_item_with_click(
+  label: String,
+  sub: String,
+  href: String,
+  icon: Element(msg),
+  loaded: Bool,
+  delay: String,
+  on_click: Option(fn() -> msg),
+) -> Element(msg) {
+  link_item_with_click_and_class(label, sub, href, icon, loaded, delay, on_click, None)
+}
+
+pub fn link_item_with_click_and_class(
+  label: String,
+  sub: String,
+  href: String,
+  icon: Element(msg),
+  loaded: Bool,
+  delay: String,
+  on_click: Option(fn() -> msg),
+  extra_class: Option(String),
+) -> Element(msg) {
+  let base_class = case loaded {
     True -> "link-item visible"
     False -> "link-item"
   }
-  html.a(
-    [
-      attribute.href(href),
-      attribute.target("_blank"),
-      attribute.rel("noopener noreferrer"),
-      attribute.class(item_class),
-      attribute.style([#("transition-delay", delay)]),
-    ],
-    [
-      html.div([attribute.class("link-icon")], [icon]),
-      html.div(
-        [attribute.class("link-info")],
-        [
-          html.span([attribute.class("link-label")], [html.text(label)]),
-          html.span([attribute.class("link-sub")], [html.text(sub)]),
-        ],
-      ),
-      html.div([attribute.class("link-arrow")], [icon_arrow()]),
-    ],
-  )
+  
+  let item_class = case extra_class {
+    Some(extra) -> base_class <> " " <> extra
+    None -> base_class
+  }
+  
+  let base_attrs = [
+    attribute.class(item_class),
+    attribute.style([#("transition-delay", delay)]),
+  ]
+  
+  let attrs = case on_click {
+    Some(click_handler) -> {
+      let click_attr = 
+        attribute.on("click", fn(_event) { Ok(click_handler()) })
+      list.append(base_attrs, [click_attr, attribute.style([#("cursor", "none")])])
+    }
+    None -> {
+      list.append(base_attrs, [
+        attribute.href(href),
+        attribute.target("_blank"),
+        attribute.rel("noopener noreferrer"),
+      ])
+    }
+  }
+  
+  let element = case on_click {
+    Some(_) -> html.div
+    None -> html.a
+  }
+  
+  element(attrs, [
+    html.div([attribute.class("link-icon")], [icon]),
+    html.div(
+      [attribute.class("link-info")],
+      [
+        html.span([attribute.class("link-label")], [html.text(label)]),
+        html.span([attribute.class("link-sub")], [html.text(sub)]),
+      ],
+    ),
+    html.div([attribute.class("link-arrow")], [icon_arrow()]),
+  ])
 }

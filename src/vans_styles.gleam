@@ -6,7 +6,7 @@ pub fn vans_styles() -> String {
   :root {
     --bg:        #EDE8DF;
     --bg2:       #E4DDD3;
-    --red:       #E31837;
+    --blue:       #3d70b3;
     --black:     #111111;
     --white:     #FAFAF7;
     --muted:     #7A7066;
@@ -30,7 +30,7 @@ pub fn vans_styles() -> String {
     position: fixed;
     width: 10px;
     height: 10px;
-    background: var(--red);
+    background: var(--blue);
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
@@ -59,7 +59,7 @@ pub fn vans_styles() -> String {
     position: fixed;
     bottom: 0; left: 0; right: 0;
     height: 36px;
-    background: var(--red);
+    background: var(--blue);
     overflow: hidden;
     z-index: 100;
     display: flex;
@@ -177,7 +177,7 @@ pub fn vans_styles() -> String {
   .avatar-ring {
     width: 96px; height: 96px;
     border-radius: 50%;
-    border: 3px solid var(--red);
+    border: 3px solid var(--blue);
     display: flex; align-items: center; justify-content: center;
     background: var(--bg2);
     position: relative;
@@ -200,7 +200,7 @@ pub fn vans_styles() -> String {
     position: absolute;
     bottom: -4px; right: -4px;
     width: 28px; height: 28px;
-    background: var(--red);
+    background: var(--blue);
     border-radius: 50%;
     border: 2px solid var(--bg);
     display: flex; align-items: center; justify-content: center;
@@ -222,7 +222,7 @@ pub fn vans_styles() -> String {
     letter-spacing: 0.02em;
     color: var(--black);
   }
-  .name-accent { color: var(--red); }
+  .name-accent { color: var(--blue); }
 
   .otw-tag {
     display: inline-block;
@@ -231,7 +231,7 @@ pub fn vans_styles() -> String {
     font-size: 11px;
     letter-spacing: 0.22em;
     color: var(--white);
-    background: var(--red);
+    background: var(--blue);
     padding: 3px 10px;
     text-transform: uppercase;
   }
@@ -247,7 +247,7 @@ pub fn vans_styles() -> String {
   }
   .tagline code {
     font-family: 'Space Grotesk', monospace;
-    color: var(--red);
+    color: var(--blue);
     font-size: 11px;
   }
 
@@ -317,7 +317,7 @@ pub fn vans_styles() -> String {
     position: absolute;
     left: 0; top: 10px; bottom: 10px;
     width: 3px;
-    background: var(--red);
+    background: var(--blue);
     border-radius: 0 2px 2px 0;
     transform: scaleY(0);
     transform-origin: center;
@@ -326,11 +326,11 @@ pub fn vans_styles() -> String {
   }
   .link-item:hover::before { opacity: 1; }
   .link-item:hover::after  { transform: scaleY(1); }
-  .link-item:hover .link-label { color: var(--red); }
+  .link-item:hover .link-label { color: var(--blue); }
   .link-item:hover .link-arrow { opacity: 1; transform: translateX(0); }
   .link-item:hover .link-icon {
-    background: var(--red);
-    border-color: var(--red);
+    background: var(--blue);
+    border-color: var(--blue);
     transform: scale(1.1);
   }
   .link-item:hover .link-info { transform: translateX(5px); }
@@ -341,6 +341,28 @@ pub fn vans_styles() -> String {
   .link-item:hover .link-icon svg path[fill='#111'],
   .link-item:hover .link-icon svg rect[fill='#111'],
   .link-item:hover .link-icon svg circle[fill='#111'] { fill: var(--white); }
+
+  .link-item.in-progress:hover::before {
+    background: rgba(61, 112, 179, 0.08);
+  }
+  .link-item.in-progress:hover::after {
+    background: linear-gradient(135deg, var(--blue), #5a8fd8);
+  }
+  .link-item.in-progress:hover .link-label {
+    color: var(--blue);
+  }
+  .link-item.in-progress:hover .link-icon {
+    background: linear-gradient(135deg, var(--blue), #5a8fd8);
+    border-color: var(--blue);
+  }
+  .link-item.in-progress .link-sub::after {
+    content: ' • In progress';
+    color: var(--blue);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
 
   .link-icon {
     position: relative;
@@ -384,9 +406,27 @@ pub fn vans_styles() -> String {
     opacity: 0;
     transform: translateX(-6px);
     transition: opacity 0.25s ease, transform 0.35s var(--spring);
-    color: var(--red);
+    color: var(--blue);
   }
   .link-arrow svg { width: 14px; height: 14px; }
+
+  .venture-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: linear-gradient(135deg, var(--blue), #5a8fd8);
+    color: var(--white);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    margin-left: 8px;
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(61, 112, 179, 0.4); }
+    50% { box-shadow: 0 0 0 6px rgba(61, 112, 179, 0); }
+  }
 
   .footer-tag {
     margin-top: 28px;
@@ -398,6 +438,74 @@ pub fn vans_styles() -> String {
     transition: opacity 0.7s ease 1.2s;
   }
   .footer-tag.visible { opacity: 1; }
+
+  .popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 17, 17, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fade-in 0.25s ease;
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .popup-content {
+    background: var(--bg);
+    border-radius: 16px;
+    padding: 32px 40px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(17, 17, 17, 0.2);
+    animation: slide-up 0.3s var(--spring);
+  }
+  @keyframes slide-up {
+    from { 
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  .popup-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    animation: bounce 0.6s var(--spring);
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .popup-message {
+    font-size: 15px;
+    color: var(--black);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    letter-spacing: 0.02em;
+  }
+  .popup-close {
+    padding: 10px 24px;
+    background: var(--blue);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    cursor: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .popup-close:hover {
+    background: #2a5a8f;
+    transform: scale(1.05);
+  }
 
   .checker-pattern { image-rendering: pixelated; }
 
@@ -451,6 +559,6 @@ pub fn vans_styles() -> String {
     letter-spacing: 0.12em;
     transition: background 0.2s ease;
   }
-  .error-button:hover { background: var(--red); }
+  .error-button:hover { background: var(--blue); }
   "
 }
