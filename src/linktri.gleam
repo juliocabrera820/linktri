@@ -1,6 +1,7 @@
 import gleam/float
 import gleam/int
 import gleam/list
+import gleam/option.{type Option, None, Some}
 import lustre
 import lustre/attribute
 import lustre/effect.{type Effect}
@@ -46,6 +47,7 @@ pub type LinkType {
   Twitter
   Portfolio
   Blog
+  ThreeDPrinting
 }
 
 pub type Link {
@@ -63,12 +65,15 @@ pub type Model {
     mouse_x: Float,
     mouse_y: Float,
     route: Route,
+    popup_message: Option(String),
   )
 }
 
 pub type Msg {
   Loaded
   MouseMoved(Float, Float)
+  ShowPopup(String)
+  HidePopup
 }
 
 // ── Init ────────────────────────────────────────────────────────────────────
@@ -101,6 +106,14 @@ fn init(_flags) -> #(Model, Effect(Msg)) {
       Link("Portfolio", "juleskab.lat", "https://juleskab.lat", Portfolio),
       Link("Blog", "blog.juleskab.lat", "https://blog.juleskab.lat", Blog),
     ]),
+    LinkGroup("Ventures", [
+      Link(
+        "3D Printing",
+        "Custom prints & prototypes",
+        "#",
+        ThreeDPrinting,
+      ),
+    ]),
   ]
   #(
     Model(
@@ -109,6 +122,7 @@ fn init(_flags) -> #(Model, Effect(Msg)) {
       mouse_x: 0.5,
       mouse_y: 0.5,
       route: get_route(),
+      popup_message: None,
     ),
     effect.from(fn(dispatch) {
       do_setup_cursor_effect(
@@ -131,6 +145,9 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
     Loaded -> #(Model(..model, loaded: True), effect.none())
     MouseMoved(x, y) ->
       #(Model(..model, mouse_x: x, mouse_y: y), effect.none())
+    ShowPopup(message) ->
+      #(Model(..model, popup_message: Some(message)), effect.none())
+    HidePopup -> #(Model(..model, popup_message: None), effect.none())
   }
 }
 
@@ -143,6 +160,7 @@ fn get_icon(link_type: LinkType) -> Element(Msg) {
     Twitter -> ui.icon_twitter()
     Portfolio -> ui.icon_portfolio()
     Blog -> ui.icon_blog()
+    ThreeDPrinting -> ui.icon_3d_printing()
   }
 }
 
@@ -209,6 +227,11 @@ fn view_home(model: Model) -> Element(Msg) {
     ]),
     // Scrolling bottom marquee
     view_marquee(),
+    // Popup overlay
+    case model.popup_message {
+      Some(message) -> view_popup(message)
+      None -> element.none()
+    },
     // Main page content
     html.div([attribute.class("page")], [
       view_parallax_bg(parallax_transform),
@@ -296,6 +319,22 @@ fn view_footer_tag(loaded: Bool) -> Element(Msg) {
   ])
 }
 
+fn view_popup(message: String) -> Element(Msg) {
+  html.div([attribute.class("popup-overlay")], [
+    html.div([attribute.class("popup-content")], [
+      html.div([attribute.class("popup-icon")], [html.text("🚧")]),
+      html.p([attribute.class("popup-message")], [html.text(message)]),
+      html.button(
+        [
+          attribute.class("popup-close"),
+          attribute.on("click", fn(_event) { Ok(HidePopup) }),
+        ],
+        [html.text("Close")],
+      ),
+    ]),
+  ])
+}
+
 fn view_link_group(
   group: LinkGroup,
   group_idx: Int,
@@ -317,14 +356,31 @@ fn view_link_group(
         *. 0.12
         +. int.to_float(item_idx)
         *. 0.09
-      ui.link_item(
-        link.label,
-        link.sub,
-        link.href,
-        get_icon(link.link_type),
-        loaded,
-        float.to_string(delay) <> "s",
-      )
+      
+      case link.link_type {
+        ThreeDPrinting -> {
+          ui.link_item_with_click_and_class(
+            link.label,
+            link.sub,
+            link.href,
+            get_icon(link.link_type),
+            loaded,
+            float.to_string(delay) <> "s",
+            Some(fn() { ShowPopup("Project in development - Coming soon") }),
+            Some("in-progress"),
+          )
+        }
+        _ -> {
+          ui.link_item(
+            link.label,
+            link.sub,
+            link.href,
+            get_icon(link.link_type),
+            loaded,
+            float.to_string(delay) <> "s",
+          )
+        }
+      }
     })
 
   let divider = case group_idx < total_groups - 1 {

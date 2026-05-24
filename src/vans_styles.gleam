@@ -342,6 +342,28 @@ pub fn vans_styles() -> String {
   .link-item:hover .link-icon svg rect[fill='#111'],
   .link-item:hover .link-icon svg circle[fill='#111'] { fill: var(--white); }
 
+  .link-item.in-progress:hover::before {
+    background: rgba(61, 112, 179, 0.08);
+  }
+  .link-item.in-progress:hover::after {
+    background: linear-gradient(135deg, var(--blue), #5a8fd8);
+  }
+  .link-item.in-progress:hover .link-label {
+    color: var(--blue);
+  }
+  .link-item.in-progress:hover .link-icon {
+    background: linear-gradient(135deg, var(--blue), #5a8fd8);
+    border-color: var(--blue);
+  }
+  .link-item.in-progress .link-sub::after {
+    content: ' • In progress';
+    color: var(--blue);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
   .link-icon {
     position: relative;
     z-index: 1;
@@ -388,6 +410,24 @@ pub fn vans_styles() -> String {
   }
   .link-arrow svg { width: 14px; height: 14px; }
 
+  .venture-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: linear-gradient(135deg, var(--blue), #5a8fd8);
+    color: var(--white);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    margin-left: 8px;
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(61, 112, 179, 0.4); }
+    50% { box-shadow: 0 0 0 6px rgba(61, 112, 179, 0); }
+  }
+
   .footer-tag {
     margin-top: 28px;
     font-family: var(--font-display);
@@ -398,6 +438,74 @@ pub fn vans_styles() -> String {
     transition: opacity 0.7s ease 1.2s;
   }
   .footer-tag.visible { opacity: 1; }
+
+  .popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 17, 17, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fade-in 0.25s ease;
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .popup-content {
+    background: var(--bg);
+    border-radius: 16px;
+    padding: 32px 40px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(17, 17, 17, 0.2);
+    animation: slide-up 0.3s var(--spring);
+  }
+  @keyframes slide-up {
+    from { 
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  .popup-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    animation: bounce 0.6s var(--spring);
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .popup-message {
+    font-size: 15px;
+    color: var(--black);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    letter-spacing: 0.02em;
+  }
+  .popup-close {
+    padding: 10px 24px;
+    background: var(--blue);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    cursor: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .popup-close:hover {
+    background: #2a5a8f;
+    transform: scale(1.05);
+  }
 
   .checker-pattern { image-rendering: pixelated; }
 
