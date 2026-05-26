@@ -1,9 +1,11 @@
 export function setupCursorEffect(onLoaded, onMouseMoved) {
   setTimeout(onLoaded, 120);
 
+  const isTouchDevice = window.matchMedia("(hover: none), (pointer: coarse)").matches;
   const el = () => document.getElementById("cursor");
 
   window.addEventListener("mousemove", (e) => {
+    if (isTouchDevice) return;
     const c = el();
     if (c) {
       c.style.left = e.clientX + "px";

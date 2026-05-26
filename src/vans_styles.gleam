@@ -507,6 +507,14 @@ pub fn vans_styles() -> String {
     transform: scale(1.05);
   }
 
+  @media (hover: none), (pointer: coarse) {
+    #cursor { display: none; }
+    html, body { cursor: auto; }
+    a, button, [role='button'] { cursor: pointer; }
+    .link-item { cursor: pointer; }
+    .popup-close { cursor: pointer; }
+  }
+
   .checker-pattern { image-rendering: pixelated; }
 
   .error-page {
