@@ -1,57 +1,85 @@
 pub fn vans_styles() -> String {
-  "@import url('https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600&display=swap');
+  "@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Instrument+Serif:ital@0;1&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  /* Design tokens — Dark Charcoal Theme (warm brown accents) */
   :root {
-    --bg:        #EDE8DF;
-    --bg2:       #E4DDD3;
-    --blue:       #3d70b3;
-    --black:     #111111;
-    --white:     #FAFAF7;
-    --muted:     #7A7066;
-    --font-display: 'Anton', sans-serif;
-    --font-body:    'Space Grotesk', sans-serif;
-    --spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+    color-scheme: dark;
+
+    /* Raw RGB channels so translucent variants stay in sync with the palette */
+    --bg-rgb:      17,18,20;
+    --p-rgb:       236,237,239;
+    --accent-rgb:  204,148,104;
+    --sand-rgb:    226,196,166;
+
+    --bg:          rgb(var(--bg-rgb));
+    --bg-card:     #1C1E22;
+    --bg-surface:  #25282D;
+    --primary:     rgb(var(--p-rgb));
+    --primary-hover: var(--accent);
+    --on-primary:  rgb(var(--bg-rgb));
+    --accent:      rgb(var(--accent-rgb));
+    --sand:        rgb(var(--sand-rgb));
+    --p70:  rgba(var(--p-rgb),.70);
+    --p40:  rgba(var(--p-rgb),.40);
+    --p20:  rgba(var(--p-rgb),.20);
+    --p12:  rgba(var(--p-rgb),.12);
+    --p08:  rgba(var(--p-rgb),.08);
+    --p06:  rgba(var(--p-rgb),.06);
+    --p04:  rgba(var(--p-rgb),.04);
+    --gray-mid:    #9AA0A8;
+
+    --sans:  'Almarai', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --serif: 'Instrument Serif', Georgia, serif;
+
+    --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-io:     cubic-bezier(0.4, 0, 0.2, 1);
+    --spring:      cubic-bezier(0.34, 1.56, 0.64, 1);
   }
+
+  html { overflow-x: hidden; }
 
   html, body {
     width: 100%; height: 100%;
     background: var(--bg);
-    font-family: var(--font-body);
-    color: var(--black);
-    overflow-x: hidden;
-    cursor: none;
+    font-family: var(--sans);
+    color: var(--primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  a, button, [role='button'] { cursor: none; }
+  a { color: inherit; text-decoration: none; }
+  /* Native OS cursor everywhere (respects the user's cursor size/contrast settings). */
+  a[href], button, [role='button'], .link-item { cursor: pointer; }
+  img { display: block; max-width: 100%; }
 
-  #cursor {
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    background: var(--blue);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    top: -100px;
-    left: -100px;
-    transform: translate(-50%, -50%);
-    transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+  /* Baseline keyboard focus ring. Zero specificity via :where(). */
+  :where(a, button, [tabindex]):focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+    border-radius: 3px;
   }
+
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--p20); border-radius: 3px; }
+
+  ::selection { background: rgba(var(--accent-rgb),.22); color: var(--primary); }
 
   .checker-tl, .checker-br {
     position: fixed;
     width: 72px; height: 72px;
     pointer-events: none;
     z-index: 10;
+    color: var(--primary);
   }
   .checker-tl { top: 0; left: 0; }
   .checker-br { bottom: 0; right: 0; }
 
   .geo-bar {
     position: absolute;
-    background: var(--white);
+    background: var(--bg-card);
     opacity: 0.75;
   }
 
@@ -59,7 +87,7 @@ pub fn vans_styles() -> String {
     position: fixed;
     bottom: 0; left: 0; right: 0;
     height: 36px;
-    background: var(--blue);
+    background: var(--accent);
     overflow: hidden;
     z-index: 100;
     display: flex;
@@ -70,16 +98,19 @@ pub fn vans_styles() -> String {
     white-space: nowrap;
     animation: marquee 22s linear infinite;
     gap: 0;
+    will-change: transform;
   }
   .marquee-track span {
-    font-family: var(--font-display);
-    font-size: 13px;
-    letter-spacing: 0.12em;
-    color: var(--white);
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--on-primary);
     padding: 0 32px;
   }
   .marquee-track .dot {
-    color: var(--white);
+    color: var(--on-primary);
     opacity: 0.5;
     padding: 0;
   }
@@ -94,10 +125,11 @@ pub fn vans_styles() -> String {
     top: 50%;
     transform: translateY(-50%) rotate(-90deg);
     transform-origin: center center;
-    font-family: var(--font-display);
+    font-family: var(--sans);
+    font-weight: 700;
     font-size: 11px;
     letter-spacing: 0.25em;
-    color: var(--muted);
+    color: var(--gray-mid);
     white-space: nowrap;
     pointer-events: none;
     z-index: 10;
@@ -108,6 +140,7 @@ pub fn vans_styles() -> String {
 
   .page {
     min-height: 100vh;
+    min-height: 100svh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -126,16 +159,17 @@ pub fn vans_styles() -> String {
   .parallax-circle {
     position: absolute;
     border-radius: 50%;
-    background: var(--bg2);
-    opacity: 0.6;
+    background: radial-gradient(circle, rgba(var(--accent-rgb),.10) 0%, var(--bg-surface) 70%);
+    opacity: 0.35;
   }
 
   .bg-word {
     position: absolute;
-    font-family: var(--font-display);
-    letter-spacing: -0.01em;
+    font-family: var(--sans);
+    font-weight: 800;
+    letter-spacing: -0.05em;
     color: transparent;
-    -webkit-text-stroke: 1px rgba(17,17,17,0.055);
+    -webkit-text-stroke: 1px var(--p06);
     white-space: nowrap;
     pointer-events: none;
     user-select: none;
@@ -143,13 +177,14 @@ pub fn vans_styles() -> String {
   }
   .bg-checker-strip {
     position: absolute;
-    background-image: repeating-conic-gradient(rgba(17,17,17,0.06) 0% 25%, transparent 0% 50%);
+    background-image: repeating-conic-gradient(var(--p06) 0% 25%, transparent 0% 50%);
     background-size: 16px 16px;
     pointer-events: none;
   }
   .bg-deco {
     position: absolute;
     pointer-events: none;
+    color: var(--primary);
   }
 
   .card {
@@ -168,7 +203,7 @@ pub fn vans_styles() -> String {
     margin-bottom: 28px;
     opacity: 0;
     transform: translateY(24px);
-    transition: opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s;
+    transition: opacity 0.7s var(--ease-out) 0.1s, transform 0.7s var(--ease-out) 0.1s;
   }
   .avatar-wrap.visible {
     opacity: 1;
@@ -177,30 +212,23 @@ pub fn vans_styles() -> String {
   .avatar-ring {
     width: 96px; height: 96px;
     border-radius: 50%;
-    border: 3px solid var(--blue);
+    border: 2px solid var(--accent);
     display: flex; align-items: center; justify-content: center;
-    background: var(--bg2);
+    background: var(--bg-surface);
     position: relative;
     overflow: hidden;
   }
   .avatar-placeholder {
     width: 100%; height: 100%;
-    display: flex; align-items: center; justify-content: center;
-    background: repeating-linear-gradient(
-      45deg,
-      var(--bg2) 0px, var(--bg2) 6px,
-      var(--white) 6px, var(--white) 12px
-    );
-    font-family: var(--font-display);
-    font-size: 28px;
-    color: var(--muted);
-    letter-spacing: 0.01em;
+    object-fit: cover;
+    background: var(--bg-surface);
   }
   .avatar-badge {
     position: absolute;
     bottom: -4px; right: -4px;
     width: 28px; height: 28px;
-    background: var(--blue);
+    background: var(--accent);
+    color: var(--on-primary);
     border-radius: 50%;
     border: 2px solid var(--bg);
     display: flex; align-items: center; justify-content: center;
@@ -212,64 +240,69 @@ pub fn vans_styles() -> String {
     margin-bottom: 8px;
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.7s ease 0.25s, transform 0.7s ease 0.25s;
+    transition: opacity 0.7s var(--ease-out) 0.25s, transform 0.7s var(--ease-out) 0.25s;
   }
   .name-block.visible { opacity: 1; transform: translateY(0); }
   .name {
-    font-family: var(--font-display);
-    font-size: clamp(38px, 7vw, 64px);
-    line-height: 1;
-    letter-spacing: 0.02em;
-    color: var(--black);
+    font-family: var(--sans);
+    font-weight: 800;
+    font-size: clamp(42px, 8vw, 72px);
+    line-height: .9;
+    letter-spacing: -0.055em;
+    color: var(--primary);
   }
-  .name-accent { color: var(--blue); }
+  .name-accent {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+    padding-left: .04em;
+  }
 
   .otw-tag {
     display: inline-block;
-    margin-top: 6px;
-    font-family: var(--font-display);
+    margin-top: 12px;
+    font-family: var(--sans);
+    font-weight: 700;
     font-size: 11px;
-    letter-spacing: 0.22em;
-    color: var(--white);
-    background: var(--blue);
-    padding: 3px 10px;
+    letter-spacing: 0.15em;
+    color: var(--on-primary);
+    background: var(--accent);
+    padding: 5px 12px;
+    border-radius: 100px;
     text-transform: uppercase;
   }
 
   .tagline {
-    margin-top: 10px;
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 0.08em;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--p70);
+    letter-spacing: 0.04em;
     line-height: 1.7;
     text-align: center;
     max-width: 360px;
-  }
-  .tagline code {
-    font-family: 'Space Grotesk', monospace;
-    color: var(--blue);
-    font-size: 11px;
   }
 
   .divider {
     width: 100%;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--black) 20%, var(--black) 80%, transparent);
-    opacity: 0.12;
+    background: linear-gradient(90deg, transparent, var(--p12) 20%, var(--p12) 80%, transparent);
     margin: 24px 0 20px;
   }
 
   .section-label {
-    font-family: var(--font-display);
-    font-size: 14px;
-    letter-spacing: 0.1em;
-    color: var(--muted);
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--p70);
     text-transform: uppercase;
     align-self: flex-start;
     margin-bottom: 8px;
     opacity: 0;
     transform: translateX(-12px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
   }
   .section-label.visible { opacity: 1; transform: translateX(0); }
 
@@ -287,15 +320,14 @@ pub fn vans_styles() -> String {
     align-items: center;
     gap: 14px;
     padding: 13px 12px;
-    border-radius: 8px;
-    border-bottom: 1px solid rgba(17,17,17,0.07);
+    border-radius: 12px;
+    border-bottom: 1px solid var(--p08);
     text-decoration: none;
-    color: var(--black);
+    color: var(--primary);
     overflow: hidden;
-    cursor: none;
     opacity: 0;
     transform: translateX(-20px);
-    transition: opacity 0.5s ease, transform 0.5s ease,
+    transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out),
                 background 0.25s ease, border-color 0.25s ease;
   }
   .link-item.visible {
@@ -306,8 +338,8 @@ pub fn vans_styles() -> String {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(17,17,17,0.04);
-    border-radius: 8px;
+    background: var(--bg-card);
+    border-radius: 12px;
     opacity: 0;
     transition: opacity 0.25s ease;
     z-index: 0;
@@ -317,63 +349,25 @@ pub fn vans_styles() -> String {
     position: absolute;
     left: 0; top: 10px; bottom: 10px;
     width: 3px;
-    background: var(--blue);
+    background: var(--accent);
     border-radius: 0 2px 2px 0;
     transform: scaleY(0);
     transform-origin: center;
     transition: transform 0.35s var(--spring);
     z-index: 2;
   }
-  .link-item:hover::before { opacity: 1; }
-  .link-item:hover::after  { transform: scaleY(1); }
-  .link-item:hover .link-label { color: var(--blue); }
-  .link-item:hover .link-arrow { opacity: 1; transform: translateX(0); }
-  .link-item:hover .link-icon {
-    background: var(--blue);
-    border-color: var(--blue);
-    transform: scale(1.1);
-  }
-  .link-item:hover .link-info { transform: translateX(5px); }
-  .link-item:hover .link-icon svg path,
-  .link-item:hover .link-icon svg rect,
-  .link-item:hover .link-icon svg circle,
-  .link-item:hover .link-icon svg line { stroke: var(--white); }
-  .link-item:hover .link-icon svg path[fill='#111'],
-  .link-item:hover .link-icon svg rect[fill='#111'],
-  .link-item:hover .link-icon svg circle[fill='#111'] { fill: var(--white); }
-
-  .link-item.in-progress:hover::before {
-    background: rgba(61, 112, 179, 0.08);
-  }
-  .link-item.in-progress:hover::after {
-    background: linear-gradient(135deg, var(--blue), #5a8fd8);
-  }
-  .link-item.in-progress:hover .link-label {
-    color: var(--blue);
-  }
-  .link-item.in-progress:hover .link-icon {
-    background: linear-gradient(135deg, var(--blue), #5a8fd8);
-    border-color: var(--blue);
-  }
-  .link-item.in-progress .link-sub::after {
-    content: ' • In progress';
-    color: var(--blue);
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
 
   .link-icon {
     position: relative;
     z-index: 1;
     width: 36px; height: 36px;
-    border-radius: 8px;
-    background: var(--bg2);
-    border: 1px solid rgba(17,17,17,0.08);
+    border-radius: 10px;
+    background: var(--p08);
+    border: 1px solid var(--p08);
+    color: var(--primary);
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
-    transition: background 0.2s ease, border-color 0.2s ease,
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease,
                 transform 0.4s var(--spring);
   }
   .link-icon svg { width: 16px; height: 16px; }
@@ -384,56 +378,99 @@ pub fn vans_styles() -> String {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: 2px;
     transition: transform 0.35s var(--spring);
   }
 
   .link-label {
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 0.01em;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
     transition: color 0.2s ease;
   }
   .link-sub {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.04em;
+    font-size: 12px;
+    color: var(--gray-mid);
+    letter-spacing: 0.03em;
   }
 
   .link-arrow {
     position: relative;
     z-index: 1;
+    display: flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px;
+    border: 1px solid var(--p12);
+    border-radius: 50%;
     opacity: 0;
     transform: translateX(-6px);
-    transition: opacity 0.25s ease, transform 0.35s var(--spring);
-    color: var(--blue);
+    transition: opacity 0.25s ease, transform 0.35s var(--spring),
+                border-color 0.3s ease, background 0.3s ease;
+    color: var(--primary);
   }
   .link-arrow svg { width: 14px; height: 14px; }
+
+  .link-item.in-progress::after {
+    background: linear-gradient(180deg, var(--accent), var(--sand));
+  }
+  .link-item.in-progress .link-sub::after {
+    content: ' • In progress';
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  @media (hover: hover) {
+    .link-item:hover::before { opacity: 1; }
+    .link-item:hover::after  { transform: scaleY(1); }
+    .link-item:hover .link-label { color: var(--accent); }
+    .link-item:hover .link-info { transform: translateX(5px); }
+    .link-item:hover .link-icon {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: var(--on-primary);
+      transform: scale(1.1);
+    }
+    .link-item:hover .link-arrow {
+      opacity: 1;
+      transform: translateX(0) rotate(-45deg);
+      border-color: var(--p40);
+      background: var(--p08);
+    }
+    .link-item.in-progress:hover .link-icon {
+      background: linear-gradient(135deg, var(--accent), var(--sand));
+      border-color: var(--accent);
+    }
+  }
+  .link-item:focus-visible { outline-offset: 0; border-radius: 12px; }
+  .link-item:focus-visible .link-arrow { opacity: 1; transform: translateX(0); }
 
   .venture-badge {
     display: inline-block;
     padding: 2px 8px;
-    background: linear-gradient(135deg, var(--blue), #5a8fd8);
-    color: var(--white);
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.15em;
+    background: linear-gradient(135deg, var(--accent), var(--sand));
+    color: var(--on-primary);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    border-radius: 4px;
+    border-radius: 100px;
     margin-left: 8px;
     animation: pulse-glow 2s ease-in-out infinite;
   }
   @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(61, 112, 179, 0.4); }
-    50% { box-shadow: 0 0 0 6px rgba(61, 112, 179, 0); }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.4); }
+    50% { box-shadow: 0 0 0 6px rgba(var(--accent-rgb), 0); }
   }
 
   .footer-tag {
     margin-top: 28px;
-    font-family: var(--font-display);
-    font-size: 10px;
-    letter-spacing: 0.25em;
-    color: var(--muted);
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--gray-mid);
     opacity: 0;
     transition: opacity 0.7s ease 1.2s;
   }
@@ -442,12 +479,14 @@ pub fn vans_styles() -> String {
   .popup-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(17, 17, 17, 0.6);
+    background: rgba(0,0,0,.6);
     backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 24px;
     animation: fade-in 0.25s ease;
   }
   @keyframes fade-in {
@@ -455,20 +494,21 @@ pub fn vans_styles() -> String {
     to { opacity: 1; }
   }
   .popup-content {
-    background: var(--bg);
-    border-radius: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--p08);
+    border-radius: 1.5rem;
     padding: 32px 40px;
     max-width: 400px;
     text-align: center;
-    box-shadow: 0 20px 60px rgba(17, 17, 17, 0.2);
+    box-shadow: 0 20px 60px rgba(0,0,0,.5);
     animation: slide-up 0.3s var(--spring);
   }
   @keyframes slide-up {
-    from { 
+    from {
       opacity: 0;
       transform: translateY(20px) scale(0.95);
     }
-    to { 
+    to {
       opacity: 1;
       transform: translateY(0) scale(1);
     }
@@ -483,36 +523,28 @@ pub fn vans_styles() -> String {
     50% { transform: translateY(-8px); }
   }
   .popup-message {
-    font-size: 15px;
-    color: var(--black);
+    font-size: 16px;
+    color: var(--p70);
     line-height: 1.6;
     margin-bottom: 24px;
-    letter-spacing: 0.02em;
   }
   .popup-close {
     padding: 10px 24px;
-    background: var(--blue);
-    color: var(--white);
+    background: var(--primary);
+    color: var(--on-primary);
     border: none;
-    border-radius: 8px;
-    font-family: var(--font-body);
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    cursor: none;
+    border-radius: 100px;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
     transition: background 0.2s ease, transform 0.2s ease;
   }
-  .popup-close:hover {
-    background: #2a5a8f;
-    transform: scale(1.05);
-  }
-
-  @media (hover: none), (pointer: coarse) {
-    #cursor { display: none; }
-    html, body { cursor: auto; }
-    a, button, [role='button'] { cursor: pointer; }
-    .link-item { cursor: pointer; }
-    .popup-close { cursor: pointer; }
+  @media (hover: hover) {
+    .popup-close:hover {
+      background: var(--primary-hover);
+      transform: scale(1.05);
+    }
   }
 
   .checker-pattern { image-rendering: pixelated; }
@@ -523,6 +555,7 @@ pub fn vans_styles() -> String {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+    min-height: 100svh;
     padding: 40px 24px 72px;
     text-align: center;
   }
@@ -532,41 +565,68 @@ pub fn vans_styles() -> String {
     50% { transform: rotate(8deg) translateX(8px); }
   }
   .error-code {
-    font-family: var(--font-display);
-    font-size: clamp(80px, 20vw, 160px);
-    line-height: 1;
-    color: var(--black);
-    letter-spacing: 0.02em;
+    font-family: var(--sans);
+    font-weight: 800;
+    font-size: clamp(96px, 22vw, 180px);
+    line-height: .88;
+    color: var(--primary);
+    letter-spacing: -0.058em;
   }
   .error-title {
-    font-family: var(--font-display);
-    font-size: clamp(16px, 4vw, 24px);
-    letter-spacing: 0.08em;
-    color: var(--black);
-    margin-top: 12px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(22px, 5vw, 32px);
+    letter-spacing: -0.01em;
+    color: var(--accent);
+    margin-top: 16px;
   }
   .error-subtitle {
-    font-size: 13px;
-    color: var(--muted);
+    font-size: 15px;
+    color: var(--p70);
     margin-top: 8px;
-    letter-spacing: 0.04em;
+    line-height: 1.6;
   }
-  .error-tips { margin-top: 16px; }
-  .error-tip { font-size: 13px; color: var(--muted); }
+  .error-tips { margin-top: 12px; }
+  .error-tip { font-size: 14px; color: var(--gray-mid); }
   .error-button {
     margin-top: 32px;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 12px 24px;
-    background: var(--black);
-    color: var(--white);
+    gap: 10px;
+    padding: .55rem 1.25rem .55rem .6rem;
+    background: var(--primary);
+    color: var(--on-primary);
     text-decoration: none;
-    font-family: var(--font-display);
-    font-size: 13px;
-    letter-spacing: 0.12em;
+    font-family: var(--sans);
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    border-radius: 100px;
     transition: background 0.2s ease;
   }
-  .error-button:hover { background: var(--blue); }
+  .error-button-icon {
+    display: flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px;
+    background: var(--on-primary);
+    color: var(--primary);
+    border-radius: 50%;
+    transition: transform 0.35s var(--spring);
+  }
+  @media (hover: hover) {
+    .error-button:hover { background: var(--primary-hover); }
+    .error-button:hover .error-button-icon { transform: translateX(-3px); }
+  }
+
+  /* Reduced motion: final states, no loops; hover feedback stays (color/border). */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track, .venture-badge, .error-skateboard, .popup-icon,
+    .popup-content, .popup-overlay { animation: none; }
+    .avatar-wrap, .name-block, .section-label, .link-item, .footer-tag {
+      transition-duration: 0.01s !important;
+      transition-delay: 0s !important;
+    }
+    .parallax-bg { transform: none !important; }
+  }
   "
 }

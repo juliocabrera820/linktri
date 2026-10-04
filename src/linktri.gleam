@@ -274,7 +274,7 @@ fn view_avatar(loaded: Bool) -> Element(Msg) {
         [
           svg.path([
             attribute.attribute("d", "M2 6h8M6 2l4 4-4 4"),
-            attribute.attribute("stroke", "#FAFAF7"),
+            attribute.attribute("stroke", "currentColor"),
             attribute.attribute("stroke-width", "1.5"),
             attribute.attribute("stroke-linecap", "round"),
             attribute.attribute("stroke-linejoin", "round"),
@@ -608,7 +608,7 @@ fn view_skate_deck(
         attribute.attribute("height", "64"),
         attribute.attribute("rx", "18"),
         attribute.attribute("fill", "none"),
-        attribute.attribute("stroke", "#111"),
+        attribute.attribute("stroke", "currentColor"),
         attribute.attribute("stroke-width", "2.5"),
       ]),
       svg.circle([
@@ -616,7 +616,7 @@ fn view_skate_deck(
         attribute.attribute("cy", "8"),
         attribute.attribute("r", "5.5"),
         attribute.attribute("fill", "none"),
-        attribute.attribute("stroke", "#111"),
+        attribute.attribute("stroke", "currentColor"),
         attribute.attribute("stroke-width", "2"),
       ]),
       svg.circle([
@@ -624,7 +624,7 @@ fn view_skate_deck(
         attribute.attribute("cy", "8"),
         attribute.attribute("r", "5.5"),
         attribute.attribute("fill", "none"),
-        attribute.attribute("stroke", "#111"),
+        attribute.attribute("stroke", "currentColor"),
         attribute.attribute("stroke-width", "2"),
       ]),
       svg.circle([
@@ -632,7 +632,7 @@ fn view_skate_deck(
         attribute.attribute("cy", "88"),
         attribute.attribute("r", "5.5"),
         attribute.attribute("fill", "none"),
-        attribute.attribute("stroke", "#111"),
+        attribute.attribute("stroke", "currentColor"),
         attribute.attribute("stroke-width", "2"),
       ]),
       svg.circle([
@@ -640,7 +640,7 @@ fn view_skate_deck(
         attribute.attribute("cy", "88"),
         attribute.attribute("r", "5.5"),
         attribute.attribute("fill", "none"),
-        attribute.attribute("stroke", "#111"),
+        attribute.attribute("stroke", "currentColor"),
         attribute.attribute("stroke-width", "2"),
       ]),
     ],
@@ -671,7 +671,7 @@ fn view_plus_mark(
         attribute.attribute("y1", "3"),
         attribute.attribute("x2", "18"),
         attribute.attribute("y2", "33"),
-        attribute.attribute("stroke", "#111"),
+        attribute.attribute("stroke", "currentColor"),
         attribute.attribute("stroke-width", "4"),
         attribute.attribute("stroke-linecap", "round"),
       ]),
@@ -680,7 +680,7 @@ fn view_plus_mark(
         attribute.attribute("y1", "18"),
         attribute.attribute("x2", "33"),
         attribute.attribute("y2", "18"),
-        attribute.attribute("stroke", "#111"),
+        attribute.attribute("stroke", "currentColor"),
         attribute.attribute("stroke-width", "4"),
         attribute.attribute("stroke-linecap", "round"),
       ]),
@@ -697,7 +697,7 @@ fn checker_cell(x: Int, y: Int, filled: Bool) -> Element(msg) {
     attribute.attribute("width", "12"),
     attribute.attribute("height", "12"),
     attribute.attribute("fill", case filled {
-      True -> "#111"
+      True -> "currentColor"
       False -> "transparent"
     }),
     attribute.attribute("opacity", case filled {
