@@ -8,6 +8,7 @@ import lustre/effect.{type Effect}
 import lustre/element.{type Element}
 import lustre/element/html
 import lustre/element/svg
+import lustre/event
 import ui
 import vans_styles.{vans_styles}
 
@@ -24,6 +25,15 @@ fn do_setup_cursor_effect(
   on_loaded: fn() -> Nil,
   on_mouse_moved: fn(Float, Float) -> Nil,
 ) -> Nil
+
+@external(javascript, "./effects.mjs", "bindEscape")
+fn bind_escape(on_escape: fn() -> Nil) -> Nil
+
+@external(javascript, "./effects.mjs", "unbindEscape")
+fn unbind_escape() -> Nil
+
+@external(javascript, "./effects.mjs", "setupScrollParallax")
+fn do_setup_scroll_parallax(on_scrolled: fn(Float) -> Nil) -> Nil
 
 // ── Routing ─────────────────────────────────────────────────────────────────
 
@@ -64,6 +74,7 @@ pub type Model {
     loaded: Bool,
     mouse_x: Float,
     mouse_y: Float,
+    scroll_t: Float,
     route: Route,
     popup_message: Option(String),
   )
@@ -72,6 +83,7 @@ pub type Model {
 pub type Msg {
   Loaded
   MouseMoved(Float, Float)
+  Scrolled(Float)
   ShowPopup(String)
   HidePopup
 }
@@ -121,6 +133,7 @@ fn init(_flags) -> #(Model, Effect(Msg)) {
       loaded: False,
       mouse_x: 0.5,
       mouse_y: 0.5,
+      scroll_t: 0.0,
       route: get_route(),
       popup_message: None,
     ),
@@ -129,6 +142,7 @@ fn init(_flags) -> #(Model, Effect(Msg)) {
         fn() { dispatch(Loaded) },
         fn(x, y) { dispatch(MouseMoved(x, y)) },
       )
+      do_setup_scroll_parallax(fn(t) { dispatch(Scrolled(t)) })
     }),
   )
 }
@@ -145,9 +159,15 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
     Loaded -> #(Model(..model, loaded: True), effect.none())
     MouseMoved(x, y) ->
       #(Model(..model, mouse_x: x, mouse_y: y), effect.none())
-    ShowPopup(message) ->
-      #(Model(..model, popup_message: Some(message)), effect.none())
-    HidePopup -> #(Model(..model, popup_message: None), effect.none())
+    Scrolled(t) -> #(Model(..model, scroll_t: t), effect.none())
+    ShowPopup(message) -> #(
+      Model(..model, popup_message: Some(message)),
+      effect.from(fn(dispatch) { bind_escape(fn() { dispatch(HidePopup) }) }),
+    )
+    HidePopup -> #(
+      Model(..model, popup_message: None),
+      effect.from(fn(_) { unbind_escape() }),
+    )
   }
 }
 
@@ -205,15 +225,12 @@ fn view_404() -> Element(Msg) {
 
 // ── Home ─────────────────────────────────────────────────────────────────────
 
+const parallax_scroll_px = 200.0
+
 fn view_home(model: Model) -> Element(Msg) {
-  let px = { model.mouse_x -. 0.5 } *. 24.0
-  let py = { model.mouse_y -. 0.5 } *. 18.0
-  let parallax_transform =
-    "translate("
-    <> float.to_string(px)
-    <> "px, "
-    <> float.to_string(py)
-    <> "px)"
+  let plx_x = { model.mouse_x -. 0.5 } *. 24.0
+  let plx_y = { model.mouse_y -. 0.5 } *. 18.0
+  let plx_s = model.scroll_t *. parallax_scroll_px
 
   let num_groups = list.length(model.link_groups)
 
@@ -234,7 +251,7 @@ fn view_home(model: Model) -> Element(Msg) {
     },
     // Main page content
     html.div([attribute.class("page")], [
-      view_parallax_bg(parallax_transform),
+      view_parallax_bg(plx_x, plx_y, plx_s),
       html.div(
         [attribute.class("card")],
         list.flatten([
@@ -298,11 +315,6 @@ fn view_name_block(loaded: Bool) -> Element(Msg) {
     html.div([attribute.class("otw-tag")], [
       html.text("\"OFF THE WALL, ON THE KEYBOARD\""),
     ]),
-    html.div([attribute.class("tagline")], [
-      html.text("</> Software Engineer · Tech Enthusiast"),
-      html.br([]),
-      html.text("Metalhead · Wannabe Pixel Artist"),
-    ]),
   ])
 }
 
@@ -320,19 +332,49 @@ fn view_footer_tag(loaded: Bool) -> Element(Msg) {
 }
 
 fn view_popup(message: String) -> Element(Msg) {
-  html.div([attribute.class("popup-overlay")], [
-    html.div([attribute.class("popup-content")], [
-      html.div([attribute.class("popup-icon")], [html.text("🚧")]),
-      html.p([attribute.class("popup-message")], [html.text(message)]),
-      html.button(
+  html.div(
+    [
+      attribute.class("popup-overlay"),
+      attribute.on("click", fn(_event) { Ok(HidePopup) }),
+    ],
+    [
+      html.div(
         [
-          attribute.class("popup-close"),
-          attribute.on("click", fn(_event) { Ok(HidePopup) }),
+          attribute.class("popup-content"),
+          attribute.role("dialog"),
+          attribute.attribute("aria-modal", "true"),
+          attribute.attribute("aria-labelledby", "popup-title"),
+          attribute.attribute("aria-describedby", "popup-message"),
+          event.on("click", fn(e) {
+            let _ = event.stop_propagation(e)
+            Error([])
+          }),
         ],
-        [html.text("Close")],
+        [
+          html.div([attribute.class("popup-icon")], [ui.icon_hourglass()]),
+          html.p(
+            [attribute.class("popup-eyebrow"), attribute.id("popup-title")],
+            [html.text("In progress")],
+          ),
+          html.p(
+            [
+              attribute.class("popup-message"),
+              attribute.id("popup-message"),
+            ],
+            [html.text(message)],
+          ),
+          html.button(
+            [
+              attribute.class("popup-close"),
+              attribute.autofocus(True),
+              attribute.on("click", fn(_event) { Ok(HidePopup) }),
+            ],
+            [html.text("Close")],
+          ),
+        ],
       ),
-    ]),
-  ])
+    ],
+  )
 }
 
 fn view_link_group(
@@ -410,194 +452,54 @@ fn view_link_group(
 
 // ── Parallax background decoratives ──────────────────────────────────────────
 
-fn view_parallax_bg(transform: String) -> Element(Msg) {
+fn css_px(value: Float) -> String {
+  float.to_string(value) <> "px"
+}
+
+fn view_parallax_bg(plx_x: Float, plx_y: Float, plx_s: Float) -> Element(Msg) {
   html.div(
     [
       attribute.class("parallax-bg"),
       attribute.style([
-        #("transform", transform),
-        #("transition", "transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)"),
+        #("--plx-x", css_px(plx_x)),
+        #("--plx-y", css_px(plx_y)),
+        #("--plx-s", css_px(plx_s)),
       ]),
     ],
     [
-      // Soft blobs
-      html.div(
-        [
-          attribute.class("parallax-circle"),
-          attribute.style([
-            #("width", "320px"),
-            #("height", "320px"),
-            #("top", "10%"),
-            #("right", "8%"),
-          ]),
-        ],
-        [],
-      ),
-      html.div(
-        [
-          attribute.class("parallax-circle"),
-          attribute.style([
-            #("width", "180px"),
-            #("height", "180px"),
-            #("bottom", "18%"),
-            #("left", "6%"),
-            #("opacity", "0.4"),
-          ]),
-        ],
-        [],
-      ),
-      html.div(
-        [
-          attribute.class("parallax-circle"),
-          attribute.style([
-            #("width", "80px"),
-            #("height", "80px"),
-            #("top", "38%"),
-            #("left", "16%"),
-            #("opacity", "0.3"),
-          ]),
-        ],
-        [],
-      ),
-      // Ghost text
-      html.div(
-        [
-          attribute.class("bg-word"),
-          attribute.style([
-            #("font-size", "clamp(80px,14vw,160px)"),
-            #("top", "5%"),
-            #("right", "-2%"),
-          ]),
-        ],
-        [html.text("OFF")],
-      ),
-      html.div(
-        [
-          attribute.class("bg-word"),
-          attribute.style([
-            #("font-size", "clamp(80px,14vw,160px)"),
-            #("bottom", "28%"),
-            #("right", "-3%"),
-          ]),
-        ],
-        [html.text("WALL")],
-      ),
-      html.div(
-        [
-          attribute.class("bg-word"),
-          attribute.style([
-            #("font-size", "clamp(40px,6vw,80px)"),
-            #("bottom", "10%"),
-            #("left", "2%"),
-            #("letter-spacing", "0.18em"),
-          ]),
-        ],
-        [html.text("SINCE 1966")],
-      ),
-      // Checkerboard strips
-      html.div(
-        [
-          attribute.class("bg-checker-strip"),
-          attribute.style([
-            #("width", "45%"),
-            #("height", "14px"),
-            #("top", "48%"),
-            #("right", "0"),
-            #("opacity", "0.9"),
-          ]),
-        ],
-        [],
-      ),
-      html.div(
-        [
-          attribute.class("bg-checker-strip"),
-          attribute.style([
-            #("width", "30%"),
-            #("height", "14px"),
-            #("top", "65%"),
-            #("left", "0"),
-            #("opacity", "0.9"),
-          ]),
-        ],
-        [],
-      ),
-      // White geo bars
-      html.div(
-        [
-          attribute.class("geo-bar"),
-          attribute.style([
-            #("width", "120px"),
-            #("height", "9px"),
-            #("top", "22%"),
-            #("left", "10%"),
-            #("opacity", "0.5"),
-          ]),
-        ],
-        [],
-      ),
-      html.div(
-        [
-          attribute.class("geo-bar"),
-          attribute.style([
-            #("width", "60px"),
-            #("height", "9px"),
-            #("top", "28%"),
-            #("right", "18%"),
-            #("opacity", "0.4"),
-          ]),
-        ],
-        [],
-      ),
-      html.div(
-        [
-          attribute.class("geo-bar"),
-          attribute.style([
-            #("width", "180px"),
-            #("height", "9px"),
-            #("bottom", "22%"),
-            #("right", "10%"),
-            #("opacity", "0.35"),
-          ]),
-        ],
-        [],
-      ),
-      // Skate deck silhouettes
-      view_skate_deck("44px", "96px", "14%", "7%", "0.07", "rotate(30deg)"),
-      view_skate_deck("32px", "70px", "6%", "7%", "0.06", "rotate(-18deg)"),
-      // Plus / cross marks
-      view_plus_mark("36px", "62%", "18%", "0.1"),
-      view_plus_mark("22px", "18%", "5%", "0.07"),
+      html.div([attribute.class("plax-layer plax-layer--mid")], [
+        html.div([attribute.class("blob blob--a")], []),
+        html.div([attribute.class("blob blob--b")], []),
+        html.div([attribute.class("blob blob--c")], []),
+      ]),
+      html.div([attribute.class("plax-layer plax-layer--far")], [
+        html.div([attribute.class("bg-word bg-word--off")], [html.text("OFF")]),
+        html.div([attribute.class("bg-word bg-word--wall")], [
+          html.text("WALL"),
+        ]),
+        html.div([attribute.class("bg-word bg-word--since")], [
+          html.text("SINCE 1966"),
+        ]),
+      ]),
+      html.div([attribute.class("plax-layer plax-layer--near")], [
+        html.div([attribute.class("bg-strip bg-strip--a")], []),
+        html.div([attribute.class("bg-strip bg-strip--b")], []),
+        html.div([attribute.class("geo-bar geo-bar--a")], []),
+        html.div([attribute.class("geo-bar geo-bar--b")], []),
+        html.div([attribute.class("geo-bar geo-bar--c")], []),
+        view_skate_deck("bg-deck--a"),
+        view_skate_deck("bg-deck--b"),
+        view_plus_mark("bg-plus--a"),
+        view_plus_mark("bg-plus--b"),
+      ]),
     ],
   )
 }
 
-fn view_skate_deck(
-  w: String,
-  h: String,
-  vert: String,
-  horiz: String,
-  opacity: String,
-  transform: String,
-) -> Element(Msg) {
-  let position_key = case w == "44px" {
-    True -> "bottom"
-    False -> "top"
-  }
-  let horiz_key = case w == "44px" {
-    True -> "right"
-    False -> "left"
-  }
+fn view_skate_deck(variant: String) -> Element(Msg) {
   svg.svg(
     [
-      attribute.class("bg-deco"),
-      attribute.style([
-        #("width", w),
-        #("height", h),
-        #(position_key, vert),
-        #(horiz_key, horiz),
-        #("opacity", opacity),
-        #("transform", transform),
-      ]),
+      attribute.class("bg-deco bg-deck " <> variant),
       attribute.attribute("viewBox", "0 0 44 96"),
     ],
     [
@@ -647,22 +549,10 @@ fn view_skate_deck(
   )
 }
 
-fn view_plus_mark(
-  size: String,
-  vert: String,
-  horiz: String,
-  opacity: String,
-) -> Element(Msg) {
+fn view_plus_mark(variant: String) -> Element(Msg) {
   svg.svg(
     [
-      attribute.class("bg-deco"),
-      attribute.style([
-        #("width", size),
-        #("height", size),
-        #("top", vert),
-        #("right", horiz),
-        #("opacity", opacity),
-      ]),
+      attribute.class("bg-deco bg-plus " <> variant),
       attribute.attribute("viewBox", "0 0 36 36"),
     ],
     [
@@ -750,7 +640,7 @@ fn marquee_item(text: String) -> List(Element(Msg)) {
 }
 
 fn view_marquee() -> Element(Msg) {
-  let words = ["OFF THE WALL", "ON THE KEYBOARD", "JULESKAB", "SOFTWARE ENGINEER", "METALHEAD", "WANNABE PIXEL ARTIST"]
+  let words = ["OFF THE WALL", "ON THE KEYBOARD", "JULESKAB", "SOFTWARE ENGINEER", "TECH ENTHUSIAST", "WANNABE PIXEL ARTIST"]
   let items = list.flatten(list.map(words, marquee_item))
   html.div([attribute.class("marquee-wrap")], [
     html.div(

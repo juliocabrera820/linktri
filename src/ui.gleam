@@ -227,6 +227,67 @@ pub fn icon_3d_printing() -> Element(msg) {
   )
 }
 
+pub fn icon_hourglass() -> Element(msg) {
+  svg.svg(
+    [
+      attribute.attribute("viewBox", "0 0 24 24"),
+      attribute.attribute("fill", "none"),
+      attribute.attribute("xmlns", "http://www.w3.org/2000/svg"),
+    ],
+    [
+      svg.path([
+        attribute.attribute("d", "M6 3h12"),
+        attribute.attribute("stroke", "currentColor"),
+        attribute.attribute("stroke-width", "1.8"),
+        attribute.attribute("stroke-linecap", "round"),
+      ]),
+      svg.path([
+        attribute.attribute("d", "M6 21h12"),
+        attribute.attribute("stroke", "currentColor"),
+        attribute.attribute("stroke-width", "1.8"),
+        attribute.attribute("stroke-linecap", "round"),
+      ]),
+      svg.path([
+        attribute.attribute("d", "M7 3v3c0 2.2 5 4 5 6s-5 3.8-5 6v3"),
+        attribute.attribute("stroke", "currentColor"),
+        attribute.attribute("stroke-width", "1.8"),
+        attribute.attribute("stroke-linecap", "round"),
+        attribute.attribute("stroke-linejoin", "round"),
+      ]),
+      svg.path([
+        attribute.attribute("d", "M17 3v3c0 2.2-5 4-5 6s5 3.8 5 6v3"),
+        attribute.attribute("stroke", "currentColor"),
+        attribute.attribute("stroke-width", "1.8"),
+        attribute.attribute("stroke-linecap", "round"),
+        attribute.attribute("stroke-linejoin", "round"),
+      ]),
+      svg.path([
+        attribute.attribute(
+          "d",
+          "M9.7 5.2h4.6c-.5.9-1.4 3-2.3 3s-1.8-2.1-2.3-3z",
+        ),
+        attribute.attribute("fill", "currentColor"),
+        attribute.attribute("stroke", "none"),
+      ]),
+      svg.path([
+        attribute.attribute("d", "M12 8.6v8.4"),
+        attribute.attribute("stroke", "currentColor"),
+        attribute.attribute("stroke-width", "1.6"),
+        attribute.attribute("stroke-linecap", "round"),
+        attribute.attribute("opacity", "0.5"),
+      ]),
+      svg.path([
+        attribute.attribute(
+          "d",
+          "M9.7 20.6c.6-2.2 1.5-3.4 2.3-3.4s1.7 1.2 2.3 3.4z",
+        ),
+        attribute.attribute("fill", "currentColor"),
+        attribute.attribute("stroke", "none"),
+      ]),
+    ],
+  )
+}
+
 pub fn icon_arrow() -> Element(msg) {
   svg.svg(
     [

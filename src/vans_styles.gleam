@@ -80,7 +80,6 @@ pub fn vans_styles() -> String {
   .geo-bar {
     position: absolute;
     background: var(--bg-card);
-    opacity: 0.75;
   }
 
   .marquee-wrap {
@@ -151,17 +150,54 @@ pub fn vans_styles() -> String {
   }
 
   .parallax-bg {
+    --plx-x: 0px;
+    --plx-y: 0px;
+    --plx-s: 0px;
     position: absolute;
     inset: -60px;
     pointer-events: none;
     z-index: 0;
   }
-  .parallax-circle {
+  .plax-layer {
+    position: absolute;
+    inset: 0;
+    will-change: transform;
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .plax-layer--far {
+    z-index: 2;
+    transform: translate3d(
+      calc(var(--plx-x) * 0.4),
+      calc(var(--plx-y) * 0.4 + var(--plx-s) * 0.45),
+      0
+    );
+  }
+  .plax-layer--mid {
+    z-index: 1;
+    transform: translate3d(
+      calc(var(--plx-x) * 0.7),
+      calc(var(--plx-y) * 0.7 + var(--plx-s) * 0.2),
+      0
+    );
+  }
+  .plax-layer--near {
+    z-index: 3;
+    transform: translate3d(
+      calc(var(--plx-x) * 1.3),
+      calc(var(--plx-y) * 1.3 - var(--plx-s) * 0.25),
+      0
+    );
+  }
+
+  .blob {
     position: absolute;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(var(--accent-rgb),.10) 0%, var(--bg-surface) 70%);
+    background: radial-gradient(circle, rgba(var(--accent-rgb), .10) 0%, var(--bg-surface) 70%);
     opacity: 0.35;
   }
+  .blob--a { width: 320px; height: 320px; top: 10%; right: 8%; }
+  .blob--b { width: 180px; height: 180px; bottom: 18%; left: 6%; opacity: 0.4; }
+  .blob--c { width: 80px; height: 80px; top: 38%; left: 16%; opacity: 0.3; }
 
   .bg-word {
     position: absolute;
@@ -175,16 +211,53 @@ pub fn vans_styles() -> String {
     user-select: none;
     line-height: 1;
   }
-  .bg-checker-strip {
+  .bg-word--off { font-size: clamp(80px, 14vw, 160px); top: 5%; right: -2%; }
+  .bg-word--wall { font-size: clamp(80px, 14vw, 160px); bottom: 28%; right: -3%; }
+  .bg-word--since { font-size: clamp(40px, 6vw, 80px); bottom: 10%; left: 2%; letter-spacing: 0.18em; }
+
+  .bg-strip {
     position: absolute;
+    height: 14px;
     background-image: repeating-conic-gradient(var(--p06) 0% 25%, transparent 0% 50%);
     background-size: 16px 16px;
     pointer-events: none;
+    opacity: 0.9;
   }
+  .bg-strip--a { width: 45%; top: 48%; right: 0; }
+  .bg-strip--b { width: 30%; top: 65%; left: 0; }
+
+  .geo-bar--a { width: 120px; height: 9px; top: 22%; left: 10%; opacity: 0.5; }
+  .geo-bar--b { width: 60px; height: 9px; top: 28%; right: 18%; opacity: 0.4; }
+  .geo-bar--c { width: 180px; height: 9px; bottom: 22%; right: 10%; opacity: 0.35; }
+
   .bg-deco {
     position: absolute;
     pointer-events: none;
     color: var(--primary);
+  }
+  .bg-deck--a { width: 44px; height: 96px; bottom: 14%; right: 7%; opacity: 0.07; transform: rotate(30deg); }
+  .bg-deck--b { width: 32px; height: 70px; top: 6%; left: 7%; opacity: 0.06; transform: rotate(-18deg); }
+  .bg-plus--a { width: 36px; height: 36px; top: 62%; right: 18%; opacity: 0.1; }
+  .bg-plus--b { width: 22px; height: 22px; top: 18%; right: 5%; opacity: 0.07; }
+
+  @media (max-width: 768px) {
+    .bg-strip, .geo-bar, .bg-deck { display: none; }
+    .bg-word { -webkit-text-stroke-color: var(--p04); }
+
+    .blob--a { width: 250px; height: 250px; top: -70px; right: -70px; opacity: 0.28; }
+    .blob--b { width: 190px; height: 190px; bottom: -60px; left: -70px; opacity: 0.28; }
+    .blob--c { display: none; }
+
+    .bg-word--off { font-size: clamp(52px, 17vw, 76px); top: 72px; right: 46px; }
+    .bg-word--wall { font-size: clamp(52px, 17vw, 76px); bottom: 34%; right: 34px; }
+    .bg-word--since { font-size: clamp(30px, 9vw, 46px); bottom: 30%; left: 46px; }
+
+    .bg-plus--a { top: 50%; right: 58px; }
+    .bg-plus--b { top: 14%; right: 62px; }
+  }
+  @media (max-width: 560px) {
+    .bg-plus { display: none; }
+    .bg-word--since { bottom: 9%; left: 40px; }
   }
 
   .card {
@@ -479,14 +552,15 @@ pub fn vans_styles() -> String {
   .popup-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,.6);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    background: rgba(var(--bg-rgb), .72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 24px;
+    cursor: pointer;
     animation: fade-in 0.25s ease;
   }
   @keyframes fade-in {
@@ -495,12 +569,16 @@ pub fn vans_styles() -> String {
   }
   .popup-content {
     background: var(--bg-card);
-    border: 1px solid var(--p08);
+    border: 1px solid var(--p12);
     border-radius: 1.5rem;
-    padding: 32px 40px;
+    padding: 36px 40px 32px;
+    width: 100%;
     max-width: 400px;
     text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,.5);
+    cursor: default;
+    box-shadow:
+      0 24px 70px rgba(0,0,0,.55),
+      inset 0 1px 0 rgba(var(--p-rgb), .05);
     animation: slide-up 0.3s var(--spring);
   }
   @keyframes slide-up {
@@ -514,22 +592,40 @@ pub fn vans_styles() -> String {
     }
   }
   .popup-icon {
-    font-size: 48px;
-    margin-bottom: 16px;
+    width: 76px;
+    height: 76px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(var(--accent-rgb), .12);
+    border: 1px solid rgba(var(--accent-rgb), .38);
+    color: var(--accent);
     animation: bounce 0.6s var(--spring);
   }
+  .popup-icon svg { width: 36px; height: 36px; }
   @keyframes bounce {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-8px); }
+  }
+  .popup-eyebrow {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
   }
   .popup-message {
     font-size: 16px;
     color: var(--p70);
     line-height: 1.6;
-    margin-bottom: 24px;
+    margin-bottom: 26px;
   }
   .popup-close {
-    padding: 10px 24px;
+    padding: 12px 28px;
     background: var(--primary);
     color: var(--on-primary);
     border: none;
@@ -538,14 +634,18 @@ pub fn vans_styles() -> String {
     font-size: 14px;
     font-weight: 800;
     letter-spacing: 0.02em;
-    transition: background 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease,
+                box-shadow 0.2s ease;
   }
   @media (hover: hover) {
     .popup-close:hover {
       background: var(--primary-hover);
       transform: scale(1.05);
+      box-shadow: 0 10px 26px rgba(var(--accent-rgb), .28);
     }
   }
+  .popup-close:active { transform: scale(0.97); }
 
   .checker-pattern { image-rendering: pixelated; }
 
@@ -626,7 +726,7 @@ pub fn vans_styles() -> String {
       transition-duration: 0.01s !important;
       transition-delay: 0s !important;
     }
-    .parallax-bg { transform: none !important; }
+    .plax-layer { transform: none !important; transition: none !important; }
   }
   "
 }
